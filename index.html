@@ -80,17 +80,17 @@ a{color:inherit}
 
 /* flags */
 .parade{overflow:hidden;border-block:1px solid var(--line);background:var(--surface);padding-block:22px}
-.track{display:flex;gap:30px;width:max-content;animation:march 90s linear infinite}
+.track{display:flex;gap:44px;width:max-content;animation:march 80s linear infinite}
 .parade:hover .track{animation-play-state:paused}
 @keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .flag{display:flex;align-items:center;gap:10px;flex:none}
-.cloth{position:relative;width:42px;height:28px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08);transform-origin:left center;animation:wave 4s ease-in-out infinite}
+.cloth{position:relative;width:60px;height:40px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08);transform-origin:left center;animation:wave 4s ease-in-out infinite}
 .flag:nth-child(2n) .cloth{animation-delay:-2s}
 .cloth svg{display:block;width:100%;height:100%}
 .cloth::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.22) 25%,rgba(0,0,0,.10) 50%,rgba(255,255,255,.18) 75%,transparent 100%);background-size:250% 100%;animation:ripple 4s linear infinite}
 @keyframes wave{0%,100%{transform:skewY(0)}50%{transform:skewY(-2deg)}}
 @keyframes ripple{from{background-position:130% 0}to{background-position:-130% 0}}
-.flag span{font-size:13px;color:var(--ink-2);white-space:nowrap}
+.flag span{font-size:15px;font-weight:500;color:var(--ink);white-space:nowrap}
 
 /* sections */
 section.block{padding-block:72px;border-bottom:1px solid var(--line)}
@@ -171,6 +171,18 @@ form.post h3{font-size:18px}
 .card .tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
 .empty{padding:28px 0;color:var(--muted)}
+.starters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.starters button{font:inherit;font-size:13px;color:var(--accent);background:var(--bg);border:1px dashed var(--accent);border-radius:999px;padding:5px 10px;cursor:pointer}
+.starters button:hover{background:var(--accent);color:#fff;border-style:solid}
+.board-head{margin-top:18px}
+.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:10px 0 6px}
+.squad{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center}
+.squad .mini{margin:0}
+.squad b{font-size:20px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.squad span{font-size:12px;color:var(--muted);line-height:1.2}
+.squad.lead{border-color:var(--accent);background:var(--surface)}
+.squad.lead b{color:var(--accent)}
+@media (max-width:600px){.board{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
@@ -280,7 +292,7 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
           <div class="fact">
             <h3>Entry to Kenya (eTA)</h3>
             <p>Kenyan passport holders and EAC partner-state passports (Burundi, DRC, Rwanda, South Sudan, Tanzania, Uganda) don't need an eTA.</p>
-            <p>Everyone else applies for an Electronic Travel Authorization before travel at <a href="https://etakenya.go.ke" target="_blank" rel="noopener">etakenya.go.ke</a>. Italy and Nigeria passports should be treated as needing one. Processing is normally three working days, so apply early.</p>
+            <p>Everyone else applies for an Electronic Travel Authorization before travel at <a href="https://etakenya.go.ke" target="_blank" rel="noopener">etakenya.go.ke</a>. Germany, Italy and Nigeria passports should be treated as needing one. Processing is normally three working days, so apply early.</p>
           </div>
           <div class="fact">
             <h3>Health documents</h3>
@@ -360,12 +372,12 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
     <div class="sec" style="grid-template-columns:1fr">
       <div class="sec-head" style="max-width:60ch">
         <div class="label">The wall</div>
-        <h2>How are you feeling about Mombasa?</h2>
-        <p>Share what you're looking forward to. Posts appear here for everyone.</p>
+        <h2>Mombasa is days away. How are you feeling?</h2>
+        <p>Say hello before we meet. Tell everyone what you're looking forward to, what you're bringing from home, or what your squad is planning. Every post shows up here for all seven countries to read.</p>
       </div>
       <div class="wall">
         <form class="post" id="postForm" novalidate>
-          <h3>Add your post</h3>
+          <h3>Say hello to everyone</h3>
           <div class="field">
             <label for="f-name">Name</label>
             <input type="text" id="f-name" maxlength="40" autocomplete="name" required>
@@ -379,8 +391,9 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
             <div class="moods" role="radiogroup" aria-labelledby="mood-lbl" id="moods"></div>
           </div>
           <div class="field">
-            <label for="f-msg">What are you looking forward to?</label>
-            <textarea id="f-msg" maxlength="280" required></textarea>
+            <label for="f-msg">Your message</label>
+            <div class="starters" id="starters" aria-label="Ideas to get you started"></div>
+            <textarea id="f-msg" maxlength="280" required placeholder="What are you looking forward to in Mombasa?"></textarea>
             <div class="count"><span id="cnt">0</span>/280</div>
           </div>
           <p class="form-msg" id="formMsg" role="status"></p>
@@ -390,8 +403,10 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
         <div>
           <div class="summary">
             <div><b id="st-posts">0</b><span class="label">Posts</span></div>
-            <div><b id="st-countries">0</b><span class="label">Countries</span></div>
+            <div><b id="st-countries">0</b><span class="label">of 7 countries</span></div>
           </div>
+          <div class="board-head label">Which squad is most excited?</div>
+          <div class="board" id="board"></div>
           <p class="note" id="storeNote" hidden></p>
           <div class="posts" id="posts"><div class="empty">Loading the wall…</div></div>
         </div>
@@ -437,9 +452,8 @@ try { myTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch(
 $("yoursBig").textContent = fmtD(myTz) + ", " + fmtT(myTz);
 $("yoursTz").textContent = "The moment the clock hits zero, in your time zone (" + myTz.replace(/_/g," ") + ").";
 const CITIES = [
-  ["Nairobi / Mombasa","Africa/Nairobi",true],["Lagos","Africa/Lagos"],["Accra","Africa/Accra"],
-  ["Dakar","Africa/Dakar"],["Kigali","Africa/Kigali"],["Johannesburg","Africa/Johannesburg"],
-  ["Cairo","Africa/Cairo"],["Rome","Europe/Rome"]
+  ["Nairobi / Mombasa","Africa/Nairobi",true],["Kampala","Africa/Kampala"],["Lusaka","Africa/Lusaka"],
+  ["Maputo","Africa/Maputo"],["Lagos","Africa/Lagos"],["Rome","Europe/Rome"],["Berlin","Europe/Berlin"]
 ];
 $("cities").innerHTML = CITIES.map(([n,tz,host]) =>
   `<tr${host?' class="host"':''}><td>${n}</td><td>${fmtT(tz)}</td><td>${fmtD(tz)}</td></tr>`
@@ -454,30 +468,16 @@ function star(cx,cy,r,fill,stroke){
 }
 const FLAGS = {
   KE:["Kenya", `<rect width="30" height="6" fill="#000"/><rect y="6" width="30" height="1.3" fill="#fff"/><rect y="7.3" width="30" height="5.4" fill="#BB0000"/><rect y="12.7" width="30" height="1.3" fill="#fff"/><rect y="14" width="30" height="6" fill="#006600"/><line x1="10.5" y1="3" x2="19.5" y2="17" stroke="#fff" stroke-width=".7"/><line x1="19.5" y1="3" x2="10.5" y2="17" stroke="#fff" stroke-width=".7"/><ellipse cx="15" cy="10" rx="3.2" ry="6.6" fill="#000"/><ellipse cx="15" cy="10" rx="1.9" ry="6.6" fill="#BB0000"/><ellipse cx="15" cy="10" rx=".6" ry="1.5" fill="#fff"/>`],
+  DE:["Germany", H(["#000","#DD0000","#FFCE00"])],
   IT:["Italy", V(["#009246","#fff","#CE2B37"])],
+  MZ:["Mozambique", `<rect width="30" height="6.3" fill="#007168"/><rect y="6.3" width="30" height="1.1" fill="#fff"/><rect y="7.4" width="30" height="5.2" fill="#000"/><rect y="12.6" width="30" height="1.1" fill="#fff"/><rect y="13.7" width="30" height="6.3" fill="#FCE100"/><polygon points="0,0 13,10 0,20" fill="#D21034"/>`+star(4.6,10,2.9,"#FCE100")],
   NG:["Nigeria", V(["#008751","#fff","#008751"])],
-  GH:["Ghana", H(["#CE1126","#FCD116","#006B3F"])+star(15,10,3,"#000")],
-  SN:["Senegal", V(["#00853F","#FDEF42","#E31B23"])+star(15,10,2.6,"#00853F")],
-  CM:["Cameroon", V(["#007A5E","#CE1126","#FCD116"])+star(15,10,2.6,"#FCD116")],
-  CI:["Côte d'Ivoire", V(["#F77F00","#fff","#009E60"])],
-  ML:["Mali", V(["#14B53A","#FCD116","#CE1126"])],
-  GN:["Guinea", V(["#CE1126","#FCD116","#009460"])],
-  TD:["Chad", V(["#002664","#FECB00","#C60C30"])],
-  UG:["Uganda", H(["#000","#FCDC04","#D90000","#000","#FCDC04","#D90000"])+`<circle cx="15" cy="10" r="3.3" fill="#fff"/>`],
-  ET:["Ethiopia", H(["#078930","#FCDD09","#DA121A"])+`<circle cx="15" cy="10" r="4.2" fill="#0F47AF"/>`+star(15,10,3.2,"#FCDD09",.5)],
-  RW:["Rwanda", `<rect width="30" height="10" fill="#00A1DE"/><rect y="10" width="30" height="5" fill="#FAD201"/><rect y="15" width="30" height="5" fill="#20603D"/><circle cx="24.5" cy="4.5" r="2.2" fill="#FAD201"/>`],
-  TZ:["Tanzania", `<rect width="30" height="20" fill="#00A3DD"/><polygon points="0,0 30,0 0,20" fill="#1EB53A"/><line x1="-2" y1="21.3" x2="32" y2="-1.3" stroke="#FCD116" stroke-width="7"/><line x1="-2" y1="21.3" x2="32" y2="-1.3" stroke="#000" stroke-width="5"/>`],
-  SL:["Sierra Leone", H(["#1EB53A","#fff","#0072C6"])],
-  GA:["Gabon", H(["#009E60","#FCD116","#3A75C4"])],
-  GM:["The Gambia", `<rect width="30" height="7" fill="#CE1126"/><rect y="7" width="30" height="6" fill="#fff"/><rect y="7.8" width="30" height="4.4" fill="#0C1C8C"/><rect y="13" width="30" height="7" fill="#3A7728"/>`],
-  EG:["Egypt", H(["#CE1126","#fff","#000"])+`<circle cx="15" cy="10" r="1.8" fill="#C09300"/>`],
-  MA:["Morocco", `<rect width="30" height="20" fill="#C1272D"/>`+star(15,10,4.4,"#006233",.8)],
-  ZA:["South Africa", `<rect width="30" height="10" fill="#DE3831"/><rect y="10" width="30" height="10" fill="#002395"/><polygon points="0,0 6,0 15.5,7 30,7 30,13 15.5,13 6,20 0,20" fill="#fff"/><polygon points="0,0 3.6,0 14.3,8.2 30,8.2 30,11.8 14.3,11.8 3.6,20 0,20" fill="#007A4D"/><polygon points="0,2.6 9.8,10 0,17.4" fill="#FFB612"/><polygon points="0,4.2 7.6,10 0,15.8" fill="#000"/>`],
-  BJ:["Benin", `<rect width="12" height="20" fill="#008751"/><rect x="12" width="18" height="10" fill="#FCD116"/><rect x="12" y="10" width="18" height="10" fill="#E8112D"/>`],
-  BW:["Botswana", `<rect width="30" height="20" fill="#75AADB"/><rect y="7.5" width="30" height="5" fill="#fff"/><rect y="8.3" width="30" height="3.4" fill="#000"/>`],
+  UG:["Uganda", H(["#000","#FCDC04","#D90000","#000","#FCDC04","#D90000"])+`<circle cx="15" cy="10" r="3.3" fill="#fff"/><circle cx="15" cy="10" r="1.3" fill="#000"/>`],
+  ZM:["Zambia", `<rect width="30" height="20" fill="#198A00"/><rect x="19.5" y="7.5" width="3.6" height="12.5" fill="#DE2010"/><rect x="23.1" y="7.5" width="3.5" height="12.5" fill="#000"/><rect x="26.6" y="7.5" width="3.4" height="12.5" fill="#EF7D00"/><polygon points="20.5,3 25,5 29.5,3 27,5.6 25,6.8 23,5.6" fill="#EF7D00"/>`],
 };
 const flagSvg = code => FLAGS[code] ? `<svg viewBox="0 0 30 20" preserveAspectRatio="none" aria-hidden="true">${FLAGS[code][1]}</svg>` : "";
-const PARADE = ["KE","IT","NG","GH","UG","SN","ET","CM","TZ","CI","RW","ZA","EG","SL","ML","BW","GA","MA","BJ","GM","GN","TD"];
+const COUNTRIES = ["KE","DE","IT","MZ","NG","UG","ZM"];
+const PARADE = [].concat(["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","IT","UG","MZ","ZM"]);
 {
   const one = hidden => PARADE.map(c=>`<div class="flag"${hidden?' aria-hidden="true"':''}><div class="cloth">${flagSvg(c)}</div><span>${FLAGS[c][0]}</span></div>`).join("");
   $("track").innerHTML = one(false) + one(true);
@@ -502,23 +502,29 @@ $("dlBtn").addEventListener("click", async e => {
 });
 
 /* ============ Wall form ============ */
-const AFRICA = ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Côte d'Ivoire","DR Congo","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","The Gambia","Ghana","Guinea","Guinea-Bissau","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Republic of the Congo","Rwanda","São Tomé and Príncipe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"];
 const NAME_TO_CODE = Object.fromEntries(Object.entries(FLAGS).map(([k,v])=>[v[0],k]));
 {
   const sel = $("f-country");
-  const opt = (v,t,g) => { const o=document.createElement("option"); o.value=v; o.textContent=t; (g||sel).appendChild(o); };
-  opt("","Select");
-  const g1=document.createElement("optgroup"); g1.label="Hosts & Europe"; sel.appendChild(g1);
-  opt("Kenya","Kenya",g1); opt("Italy","Italy",g1);
-  const g2=document.createElement("optgroup"); g2.label="Africa"; sel.appendChild(g2);
-  AFRICA.forEach(c=>opt(c,c,g2));
-  const g3=document.createElement("optgroup"); g3.label="Other"; sel.appendChild(g3);
-  opt("Other","Somewhere else",g3);
+  const opt = (v,t) => { const o=document.createElement("option"); o.value=v; o.textContent=t; sel.appendChild(o); };
+  opt("","Select your country");
+  COUNTRIES.forEach(c=>opt(FLAGS[c][0],FLAGS[c][0]));
+  opt("Other","Somewhere else");
 }
 const MOODS = [["excited","Excited"],["cant-wait","Can't wait"],["curious","Curious"],["nervous","A little nervous"],["competitive","Here to win"]];
 const MOOD = Object.fromEntries(MOODS);
 $("moods").innerHTML = MOODS.map(([id,l],i)=>`<input type="radio" name="mood" id="mood-${id}" value="${id}"${i===0?" checked":""}><label for="mood-${id}">${l}</label>`).join("");
 $("f-msg").addEventListener("input", e => $("cnt").textContent = e.target.value.length);
+const STARTERS = ["I can't wait to…","From home I'm bringing…","Our squad's presentation will be…","The food I want everyone to try is…","Mombasa, get ready for…"];
+STARTERS.forEach(t => {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = t;
+  b.addEventListener("click", () => {
+    const ta = $("f-msg"); const base = t.replace(/…$/,"") + " ";
+    ta.value = ta.value.trim() ? ta.value.trim() + "\n" + base : base;
+    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+    $("cnt").textContent = ta.value.length;
+  });
+  $("starters").appendChild(b);
+});
 try {
   const d = JSON.parse(localStorage.getItem("ys-me")||"{}");
   if (d.name) $("f-name").value = d.name;
@@ -538,7 +544,7 @@ function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.clas
 function render(){
   const box = $("posts"); box.innerHTML = "";
   const posts = POSTS.slice().sort((a,b)=>b.createdAt-a.createdAt);
-  if (!posts.length) box.appendChild(el("div","empty","No posts yet. Be the first to share how you're feeling."));
+  if (!posts.length) box.appendChild(el("div","empty","No posts yet. Be the first to say hello, and put your country on the board."));
   for (const p of posts){
     const c = el("article","card");
     const mini = el("div","mini");
@@ -556,7 +562,17 @@ function render(){
     c.append(mini, main); box.appendChild(c);
   }
   $("st-posts").textContent = posts.length;
-  $("st-countries").textContent = new Set(posts.map(p=>p.country).filter(c=>c && c!=="Other")).size;
+  $("st-countries").textContent = new Set(posts.map(p=>p.country).filter(c=>NAME_TO_CODE[c])).size;
+  const counts = {}; posts.forEach(p => { if (NAME_TO_CODE[p.country]) counts[p.country] = (counts[p.country]||0)+1; });
+  const top = Math.max(0, ...Object.values(counts));
+  const board = $("board"); board.innerHTML = "";
+  COUNTRIES.map(c=>FLAGS[c][0]).sort((a,b)=>(counts[b]||0)-(counts[a]||0)).forEach(name => {
+    const n = counts[name]||0;
+    const d = el("div","squad"+(n && n===top ? " lead" : ""));
+    const m = el("div","mini"); m.innerHTML = flagSvg(NAME_TO_CODE[name]);
+    d.append(m, el("b",null,String(n)), el("span",null,name));
+    board.appendChild(d);
+  });
 }
 setInterval(render, 60000);
 const clean = (s,n) => String(s||"").replace(/[ \t]+\n/g,"\n").trim().slice(0,n);
@@ -634,7 +650,7 @@ $("postForm").addEventListener("submit", async e => {
     lastPost = Date.now();
     try { localStorage.setItem("ys-me", JSON.stringify({name, country})); } catch(err){}
     $("f-msg").value = ""; $("cnt").textContent = "0";
-    msgEl.className = "form-msg ok"; msgEl.textContent = "Posted. Everyone can see it on the wall.";
+    msgEl.className = "form-msg ok"; msgEl.textContent = "Posted! Everyone can see it on the wall now.";
   } catch(err){
     fail(err && err.code==="invalid_argument" ? "This link lets you read the wall but not post. Ask the organisers for access." : "Your post didn't save. Check your connection and try again.");
   } finally { btn.disabled = false; btn.textContent = "Post to the wall"; }
