@@ -11,33 +11,26 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --bg:#F6F6F3;
-  --surface:#FFFFFF;
-  --ink:#15181B;
-  --ink-2:#3A4046;
-  --muted:#697178;
-  --line:#E2E3DF;
-  --line-2:#CFD1CC;
-  --accent:#1D5A43;
+  color-scheme: light;
+  --bg:#FFFFFF;
+  --surface:#F5F8F4;
+  --ink:#15201A;
+  --ink-2:#3B4A41;
+  --muted:#65736A;
+  --line:#E3E8E2;
+  --line-2:#CBD5CB;
+  --accent:#0E8A2F;      /* logo green */
   --accent-ink:#FFFFFF;
-  --err:#A3322A;
-  --ok:#1D5A43;
+  --red:#C8102E;         /* logo red */
+  --gold:#E8B400;        /* logo gold */
+  --blue:#1F4FA0;        /* logo blue (Europe) */
+  --err:#C8102E;
+  --ok:#0E8A2F;
   --sans:"Schibsted Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#111416; --surface:#171B1E; --ink:#ECEDEA; --ink-2:#C9CDCF; --muted:#959DA3;
-    --line:#262B2F; --line-2:#353B40; --accent:#7CC3A0; --accent-ink:#0E1A14; --err:#E08A80; --ok:#7CC3A0;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#111416; --surface:#171B1E; --ink:#ECEDEA; --ink-2:#C9CDCF; --muted:#959DA3;
-  --line:#262B2F; --line-2:#353B40; --accent:#7CC3A0; --accent-ink:#0E1A14; --err:#E08A80; --ok:#7CC3A0;
-}
 *{box-sizing:border-box}
+.stripe{height:5px;background:linear-gradient(90deg,var(--accent) 0 40%,var(--gold) 40% 60%,var(--red) 60% 80%,var(--blue) 80% 100%)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .wrap{max-width:1040px;margin:0 auto;padding-inline:24px}
 h1,h2,h3{margin:0;line-height:1.15;text-wrap:balance;font-weight:600;letter-spacing:-.015em}
@@ -57,16 +50,19 @@ a{color:inherit}
 .top nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 
 /* hero */
-.hero{padding-block:56px 48px}
-.hero h1{font-size:clamp(32px,5vw,52px);max-width:18ch}
+.hero{padding-block:28px 48px}
+.hero-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.hero-top .label{color:var(--accent);font-weight:500}
+.hero h1{font-size:clamp(28px,4.4vw,46px);max-width:20ch;margin-top:36px}
 .hero .sub{margin-top:14px;color:var(--ink-2);font-size:18px;max-width:52ch}
-.clock{margin-top:40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.clock{margin-top:14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
 .unit{padding:18px 0 16px;border-right:1px solid var(--line)}
 .unit + .unit{padding-left:20px}
 .unit:last-child{border-right:0}
+.unit:first-child .n{color:var(--accent)}
 .unit .n{display:block;font-weight:500;font-size:clamp(44px,9vw,104px);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .unit .l{display:block;margin-top:10px}
-.live{display:none;margin-top:40px;padding-block:22px;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);font-size:clamp(28px,4vw,40px);font-weight:600}
+.live{display:none;margin-top:14px;padding-block:22px;color:var(--accent);border-top:3px solid var(--accent);border-bottom:1px solid var(--line);font-size:clamp(28px,4vw,40px);font-weight:600}
 .hero.done .clock{display:none}
 .hero.done .live{display:block}
 .target{margin-top:14px;color:var(--muted);font-size:14px}
@@ -79,7 +75,7 @@ a{color:inherit}
 .ctable tr:first-child td{border-top:1px solid var(--line)}
 .ctable td:nth-child(2),.ctable td:nth-child(3){text-align:right;font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
 .ctable td:nth-child(3){color:var(--muted);width:120px}
-.ctable tr.host td{font-weight:600}
+.ctable tr.host td{font-weight:600;color:var(--accent)}
 .ctable tr.host td:nth-child(3){color:var(--ink-2)}
 
 /* flags */
@@ -99,6 +95,7 @@ a{color:inherit}
 /* sections */
 section.block{padding-block:72px;border-bottom:1px solid var(--line)}
 .sec{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:40px}
+.sec-head .label{color:var(--accent);font-weight:500}
 .sec-head h2{font-size:clamp(24px,3vw,32px);margin-top:10px}
 .sec-head p{margin-top:12px;color:var(--muted);font-size:15px}
 .body > * + *{margin-top:28px}
@@ -113,7 +110,7 @@ section.block{padding-block:72px;border-bottom:1px solid var(--line)}
 .btn svg{width:18px;height:18px}
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
 .dl-msg{font-size:13px;color:var(--muted);width:100%}
-.rule{padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.rule{padding:18px 0;border-top:3px solid var(--gold);border-bottom:1px solid var(--line)}
 .rule p{font-size:19px;font-weight:500;margin-top:6px;max-width:56ch}
 .facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
 .fact{padding:20px 20px 20px 0;border-bottom:1px solid var(--line)}
@@ -132,7 +129,7 @@ section.block{padding-block:72px;border-bottom:1px solid var(--line)}
 .list li{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;padding:14px 0;border-bottom:1px solid var(--line)}
 .list b{font-weight:600}
 .list span{color:var(--ink-2)}
-.awards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.awards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:3px solid var(--red)}
 .award{padding:20px 20px 4px 0}
 .award + .award{padding-left:20px;border-left:1px solid var(--line)}
 .award h3{font-size:18px;margin-top:8px}
@@ -150,7 +147,7 @@ form.post h3{font-size:18px}
 .moods{display:flex;flex-wrap:wrap;gap:6px}
 .moods input{position:absolute;opacity:0;pointer-events:none}
 .moods label{margin:0;font-size:14px;font-weight:500;color:var(--ink-2);padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);cursor:pointer}
-.moods input:checked + label{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.moods input:checked + label{background:var(--accent);color:#fff;border-color:var(--accent)}
 .moods input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink-2)}
 .check input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent)}
@@ -158,10 +155,9 @@ form.post h3{font-size:18px}
 .form-msg.err{color:var(--err)}
 .form-msg.ok{color:var(--ok)}
 
-.summary{display:flex;gap:28px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--ink)}
+.summary{display:flex;gap:28px;flex-wrap:wrap;padding-bottom:16px;border-bottom:3px solid var(--accent)}
+.summary b{color:var(--accent)}
 .summary div b{display:block;font-size:28px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
-.vols{padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-2)}
-.vols b{color:var(--ink);font-weight:600}
 .note{font-size:13px;color:var(--muted);padding-top:12px}
 .posts{margin-top:4px}
 .card{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -174,7 +170,6 @@ form.post h3{font-size:18px}
 .card .msg{margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
 .card .tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
-.tag.vol{border-color:var(--accent);color:var(--accent)}
 .empty{padding:28px 0;color:var(--muted)}
 
 footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -207,6 +202,7 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
 
 </head>
 <body>
+<div class="stripe"></div>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#hero">
@@ -221,10 +217,9 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
   </header>
 
   <section class="hero" id="hero">
-    <div class="label">Arrival · 3 October · Shanzu, Mombasa</div>
-    <h1 style="margin-top:14px">Karibuni Mombasa. We look forward to seeing you.</h1>
-    <p class="sub">Participants arrive on 3 October with their coordinators. The clock counts to midnight Kenya time.</p>
-
+    <div class="hero-top">
+      <div class="label">Arrival in Mombasa · 3 October · 00:00 Kenya time</div>
+    </div>
     <div class="clock" role="timer" aria-label="Time left until 3 October, 00:00 Kenya time">
       <div class="unit"><span class="n" id="d">--</span><span class="l label">Days</span></div>
       <div class="unit"><span class="n" id="h">--</span><span class="l label">Hours</span></div>
@@ -233,6 +228,9 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
     </div>
     <div class="live">It's 3 October. Karibuni!</div>
     <p class="target">Target: Saturday 3 October 2026, 00:00 East Africa Time (UTC+3)</p>
+
+    <h1>Karibuni Mombasa. We look forward to seeing you.</h1>
+    <p class="sub">Participants arrive on 3 October with their coordinators, in Shanzu on Kenya's Swahili coast.</p>
 
     <div class="zones">
       <div class="yours">
@@ -363,7 +361,7 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
       <div class="sec-head" style="max-width:60ch">
         <div class="label">The wall</div>
         <h2>How are you feeling about Mombasa?</h2>
-        <p>Share what you're looking forward to. Posts appear here for everyone. We're also looking for someone to lead the countdown; tick the box if you'd like to volunteer.</p>
+        <p>Share what you're looking forward to. Posts appear here for everyone.</p>
       </div>
       <div class="wall">
         <form class="post" id="postForm" novalidate>
@@ -385,7 +383,6 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
             <textarea id="f-msg" maxlength="280" required></textarea>
             <div class="count"><span id="cnt">0</span>/280</div>
           </div>
-          <label class="check" for="f-vol"><input type="checkbox" id="f-vol"> I'd like to volunteer to lead the countdown</label>
           <p class="form-msg" id="formMsg" role="status"></p>
           <button class="btn" type="submit" id="submitBtn" style="justify-content:center">Post to the wall</button>
         </form>
@@ -394,9 +391,7 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
           <div class="summary">
             <div><b id="st-posts">0</b><span class="label">Posts</span></div>
             <div><b id="st-countries">0</b><span class="label">Countries</span></div>
-            <div><b id="st-vol">0</b><span class="label">Countdown volunteers</span></div>
           </div>
-          <div class="vols" id="vols">No countdown volunteers yet.</div>
           <p class="note" id="storeNote" hidden></p>
           <div class="posts" id="posts"><div class="empty">Loading the wall…</div></div>
         </div>
@@ -557,17 +552,11 @@ function render(){
     main.append(hd, el("p","msg",p.message));
     const tags = el("div","tags");
     if (MOOD[p.mood]) tags.append(el("span","tag",MOOD[p.mood]));
-    if (p.volunteer) tags.append(el("span","tag vol","Countdown volunteer"));
     if (tags.childNodes.length) main.append(tags);
     c.append(mini, main); box.appendChild(c);
   }
   $("st-posts").textContent = posts.length;
   $("st-countries").textContent = new Set(posts.map(p=>p.country).filter(c=>c && c!=="Other")).size;
-  const vols = [...new Map(posts.filter(p=>p.volunteer).map(p=>[p.name.trim().toLowerCase(), p])).values()];
-  $("st-vol").textContent = vols.length;
-  const v = $("vols"); v.innerHTML = "";
-  if (!vols.length) v.textContent = "No countdown volunteers yet.";
-  else { v.append(document.createTextNode("Volunteering to lead the countdown: ")); vols.forEach((x,i)=>{ if(i) v.append(document.createTextNode(", ")); v.append(el("b",null,x.name + (x.country && x.country!=="Other" ? " ("+x.country+")" : ""))); }); }
 }
 setInterval(render, 60000);
 const clean = (s,n) => String(s||"").replace(/[ \t]+\n/g,"\n").trim().slice(0,n);
@@ -600,7 +589,7 @@ function useSupabase(){
   }
   load(); setInterval(load, 15000);
   Store.add = async p => {
-    const r = await fetch(base,{method:"POST",headers:{...headers,Prefer:"return=minimal"},body:JSON.stringify({name:p.name,country:p.country,mood:p.mood,message:p.message,volunteer:p.volunteer})});
+    const r = await fetch(base,{method:"POST",headers:{...headers,Prefer:"return=minimal"},body:JSON.stringify({name:p.name,country:p.country,mood:p.mood,message:p.message})});
     if (!r.ok) throw new Error("save failed "+r.status);
     POSTS.push(p); render(); setTimeout(load, 800);
   };
@@ -614,7 +603,7 @@ async function useClaudeDb(){
     snap => { POSTS = snap.docs.map(d => normalize({id:d.id, ...d.data()})); render(); },
     () => { $("storeNote").hidden=false; $("storeNote").textContent="The wall disconnected. Reload the page to see new posts."; }
   );
-  Store.add = async p => { await col.add({name:p.name,country:p.country,mood:p.mood,message:p.message,volunteer:p.volunteer,createdAt:p.createdAt}); };
+  Store.add = async p => { await col.add({name:p.name,country:p.country,mood:p.mood,message:p.message,createdAt:p.createdAt}); };
   return true;
 }
 (async function initStore(){
@@ -639,12 +628,12 @@ $("postForm").addEventListener("submit", async e => {
   if (Date.now()-lastPost < 8000) return fail("Wait a few seconds before posting again.");
   if (!Store.add) return fail("The wall is still loading. Try again in a moment.");
   const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Posting…";
-  const post = { name, country, mood, message, volunteer:$("f-vol").checked, createdAt:Date.now() };
+  const post = { name, country, mood, message, createdAt:Date.now() };
   try {
     await Store.add(post);
     lastPost = Date.now();
     try { localStorage.setItem("ys-me", JSON.stringify({name, country})); } catch(err){}
-    $("f-msg").value = ""; $("cnt").textContent = "0"; $("f-vol").checked = false;
+    $("f-msg").value = ""; $("cnt").textContent = "0";
     msgEl.className = "form-msg ok"; msgEl.textContent = "Posted. Everyone can see it on the wall.";
   } catch(err){
     fail(err && err.code==="invalid_argument" ? "This link lets you read the wall but not post. Ask the organisers for access." : "Your post didn't save. Check your connection and try again.");
