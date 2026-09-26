@@ -95,6 +95,7 @@ a{color:inherit}
 /* sections */
 section.block{padding-block:72px;border-bottom:1px solid var(--line)}
 .sec{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:40px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .sec-head .label{color:var(--accent);font-weight:500}
 .sec-head h2{font-size:clamp(24px,3vw,32px);margin-top:10px}
 .sec-head p{margin-top:12px;color:var(--muted);font-size:15px}
@@ -136,59 +137,70 @@ section.block{padding-block:72px;border-bottom:1px solid var(--line)}
 .award p{margin-top:8px;color:var(--ink-2);font-size:15px}
 
 /* wall */
-.wall{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:40px;align-items:start}
-form.post{display:grid;gap:16px;padding:24px;background:var(--surface);border:1px solid var(--line-2);border-radius:8px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
-form.post h3{font-size:18px}
-.field label,.field .lbl{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink-2)}
-.field input[type=text],.field select,.field textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line-2);border-radius:6px;padding:10px 12px}
-.field textarea{min-height:104px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ink)}
-.count{font-size:12px;color:var(--muted);text-align:right;margin-top:4px;font-family:var(--mono)}
-.moods{display:flex;flex-wrap:wrap;gap:6px}
-.moods input{position:absolute;opacity:0;pointer-events:none}
-.moods label{margin:0;font-size:14px;font-weight:500;color:var(--ink-2);padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);cursor:pointer}
-.moods input:checked + label{background:var(--accent);color:#fff;border-color:var(--accent)}
-.moods input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink-2)}
-.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent)}
-.form-msg{font-size:14px;min-height:1.3em}
+.wall{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:32px;align-items:start}
+.chat{border:1px solid var(--line-2);border-radius:12px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.chat-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface)}
+.chat-top b{display:block;font-size:16px}
+.chat-top small{color:var(--muted);font-size:13px}
+.chat-flags{display:flex}
+.chat-flags .mini{width:26px;height:18px;margin:0 0 0 -6px;border:2px solid var(--surface);box-shadow:none;border-radius:3px}
+.stream{height:min(62vh,560px);overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px;background:
+  radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0) 0 0/18px 18px, var(--bg);scroll-behavior:smooth}
+.msgrow{display:flex;gap:10px;align-items:flex-end;max-width:82%}
+.msgrow.me{align-self:flex-end;flex-direction:row-reverse}
+.msgrow .mini{width:32px;height:22px;flex:none;margin-bottom:4px}
+.bubble{background:#fff;border:1px solid var(--line-2);border-radius:14px 14px 14px 4px;padding:9px 13px 7px;box-shadow:0 1px 2px rgba(21,32,26,.05);min-width:0}
+.me .bubble{background:var(--accent);border-color:var(--accent);color:#fff;border-radius:14px 14px 4px 14px}
+.bubble .who{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:13px}
+.bubble .who b{font-weight:600;color:var(--accent)}
+.bubble .who span{color:var(--muted)}
+.me .bubble .who b,.me .bubble .who span{color:rgba(255,255,255,.85)}
+.bubble .txt{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15.5px;line-height:1.45}
+.bubble .t{display:block;text-align:right;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:3px}
+.me .bubble .t{color:rgba(255,255,255,.75)}
+.msgrow.new{animation:pop .45s ease-out both}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.composer{border-top:1px solid var(--line);background:var(--surface);padding:12px 14px 10px;display:grid;gap:10px}
+.who-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.composer input[type=text],.composer select,.composer textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:8px;padding:9px 12px}
+.composer input:focus,.composer select:focus,.composer textarea:focus{outline:none;border-color:var(--accent)}
+.send-row{display:flex;gap:8px;align-items:flex-end}
+.send-row textarea{min-height:46px;max-height:160px;resize:none;border-radius:22px;padding:11px 16px}
+.send{border-radius:999px;height:46px;padding:0 20px;flex:none}
+.meta-row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.count{font-size:12px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
+.form-msg{font-size:13px;min-height:1.2em;margin:0}
 .form-msg.err{color:var(--err)}
 .form-msg.ok{color:var(--ok)}
-
-.summary{display:flex;gap:28px;flex-wrap:wrap;padding-bottom:16px;border-bottom:3px solid var(--accent)}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
+.summary{display:flex;gap:28px;flex-wrap:wrap;padding-bottom:14px;border-bottom:3px solid var(--accent)}
 .summary b{color:var(--accent)}
 .summary div b{display:block;font-size:28px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
 .note{font-size:13px;color:var(--muted);padding-top:12px}
-.posts{margin-top:4px}
-.card{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
-.mini{width:36px;height:24px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:3px}
+.mini{width:36px;height:24px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--surface)}
 .mini svg{width:100%;height:100%;display:block}
-.card .hd{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
-.card .nm{font-weight:600}
-.card .ct,.card .when{font-size:13px;color:var(--muted)}
-.card .when{margin-left:auto;font-family:var(--mono);font-size:12px}
-.card .msg{margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
-.card .tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
-.tag{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
-.empty{padding:28px 0;color:var(--muted)}
-.starters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.starters button{font:inherit;font-size:13px;color:var(--accent);background:var(--bg);border:1px dashed var(--accent);border-radius:999px;padding:5px 10px;cursor:pointer}
+.empty{margin:auto;padding:28px 12px;color:var(--muted);text-align:center;max-width:32ch}
+.starters{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.starters::-webkit-scrollbar{display:none}
+.starters button{flex:none;white-space:nowrap;font:inherit;font-size:13px;color:var(--accent);background:var(--bg);border:1px dashed var(--accent);border-radius:999px;padding:5px 10px;cursor:pointer}
 .starters button:hover{background:var(--accent);color:#fff;border-style:solid}
 .board-head{margin-top:18px}
-.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:10px 0 6px}
-.squad{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center}
+.board{display:grid;grid-template-columns:1fr;gap:6px;margin:10px 0 6px}
+.squad{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.squad .mini{width:30px;height:20px}
 .squad .mini{margin:0}
 .squad b{font-size:20px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
-.squad span{font-size:12px;color:var(--muted);line-height:1.2}
+.squad span{font-size:14px;color:var(--ink-2);line-height:1.2;order:0}
+.squad b{order:2}
 .squad.lead{border-color:var(--accent);background:var(--surface)}
 .squad.lead b{color:var(--accent)}
-@media (max-width:600px){.board{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:860px){.side{position:static;order:-1}.board{display:flex;flex-wrap:wrap;gap:6px}.squad{grid-template-columns:auto auto auto;padding:6px 10px;gap:8px}.squad span{font-size:13px}.squad b{font-size:15px}}
+@media (max-width:600px){.msgrow{max-width:92%}.who-row{grid-template-columns:1fr}.chat-flags{display:none}.summary div b{font-size:24px}}
 
 footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 @media (max-width:860px){
   .sec,.wall,.zones{grid-template-columns:1fr;gap:24px}
-  form.post{position:static}
   .top nav{display:none}
 }
 @media (max-width:600px){
@@ -376,40 +388,37 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
         <p>Say hello before we meet. Tell everyone what you're looking forward to, what you're bringing from home, or what your squad is planning. Every post shows up here for all seven countries to read.</p>
       </div>
       <div class="wall">
-        <form class="post" id="postForm" novalidate>
-          <h3>Say hello to everyone</h3>
-          <div class="field">
-            <label for="f-name">Name</label>
-            <input type="text" id="f-name" maxlength="40" autocomplete="name" required>
+        <div class="chat">
+          <div class="chat-top">
+            <div><b>Mombasa squad chat</b><small id="chatSub">Germany, Italy, Kenya, Mozambique, Nigeria, Uganda, Zambia</small></div>
+            <div class="chat-flags" id="chatFlags" aria-hidden="true"></div>
           </div>
-          <div class="field">
-            <label for="f-country">Country</label>
-            <select id="f-country"></select>
-          </div>
-          <div class="field">
-            <span class="lbl" id="mood-lbl">Feeling</span>
-            <div class="moods" role="radiogroup" aria-labelledby="mood-lbl" id="moods"></div>
-          </div>
-          <div class="field">
-            <label for="f-msg">Your message</label>
+          <div class="stream" id="posts" role="log" aria-live="polite" aria-label="Messages"><div class="empty">Loading messages…</div></div>
+          <form class="composer" id="postForm" novalidate>
+            <div class="who-row">
+              <label class="sr" for="f-name">Your name</label>
+              <input type="text" id="f-name" maxlength="40" autocomplete="name" placeholder="Your name" required>
+              <label class="sr" for="f-country">Your country</label>
+              <select id="f-country"></select>
+            </div>
             <div class="starters" id="starters" aria-label="Ideas to get you started"></div>
-            <textarea id="f-msg" maxlength="280" required placeholder="What are you looking forward to in Mombasa?"></textarea>
-            <div class="count"><span id="cnt">0</span>/280</div>
-          </div>
-          <p class="form-msg" id="formMsg" role="status"></p>
-          <button class="btn" type="submit" id="submitBtn" style="justify-content:center">Post to the wall</button>
-        </form>
-
-        <div>
+            <div class="send-row">
+              <label class="sr" for="f-msg">Your message</label>
+              <textarea id="f-msg" maxlength="280" rows="1" placeholder="Say hello to everyone…" required></textarea>
+              <button class="btn send" type="submit" id="submitBtn">Send</button>
+            </div>
+            <div class="meta-row"><p class="form-msg" id="formMsg" role="status"></p><span class="count"><span id="cnt">0</span>/280</span></div>
+          </form>
+        </div>
+        <aside class="side">
           <div class="summary">
-            <div><b id="st-posts">0</b><span class="label">Posts</span></div>
+            <div><b id="st-posts">0</b><span class="label">Messages</span></div>
             <div><b id="st-countries">0</b><span class="label">of 7 countries</span></div>
           </div>
           <div class="board-head label">Which squad is most excited?</div>
           <div class="board" id="board"></div>
           <p class="note" id="storeNote" hidden></p>
-          <div class="posts" id="posts"><div class="empty">Loading the wall…</div></div>
-        </div>
+        </aside>
       </div>
     </div>
   </section>
@@ -503,6 +512,7 @@ $("dlBtn").addEventListener("click", async e => {
 
 /* ============ Wall form ============ */
 const NAME_TO_CODE = Object.fromEntries(Object.entries(FLAGS).map(([k,v])=>[v[0],k]));
+$("chatFlags").innerHTML = COUNTRIES.map(c=>`<div class="mini">${flagSvg(c)}</div>`).join("");
 {
   const sel = $("f-country");
   const opt = (v,t) => { const o=document.createElement("option"); o.value=v; o.textContent=t; sel.appendChild(o); };
@@ -510,10 +520,8 @@ const NAME_TO_CODE = Object.fromEntries(Object.entries(FLAGS).map(([k,v])=>[v[0]
   COUNTRIES.forEach(c=>opt(FLAGS[c][0],FLAGS[c][0]));
   opt("Other","Somewhere else");
 }
-const MOODS = [["excited","Excited"],["cant-wait","Can't wait"],["curious","Curious"],["nervous","A little nervous"],["competitive","Here to win"]];
-const MOOD = Object.fromEntries(MOODS);
-$("moods").innerHTML = MOODS.map(([id,l],i)=>`<input type="radio" name="mood" id="mood-${id}" value="${id}"${i===0?" checked":""}><label for="mood-${id}">${l}</label>`).join("");
-$("f-msg").addEventListener("input", e => $("cnt").textContent = e.target.value.length);
+$("f-msg").addEventListener("input", e => { const t=e.target; $("cnt").textContent = t.value.length; t.style.height="auto"; t.style.height=Math.min(t.scrollHeight,160)+"px"; });
+$("f-msg").addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && !e.isComposing && window.matchMedia("(hover:hover)").matches){ e.preventDefault(); $("postForm").requestSubmit(); } });
 const STARTERS = ["I can't wait to…","From home I'm bringing…","Our squad's presentation will be…","The food I want everyone to try is…","Mombasa, get ready for…"];
 STARTERS.forEach(t => {
   const b = document.createElement("button"); b.type = "button"; b.textContent = t;
@@ -541,26 +549,30 @@ function ago(ts){
   const d=Math.round(h/24); return d+(d===1?" day ago":" days ago");
 }
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+const SEEN = new Set(); let firstRender = true, forceScroll = false;
+function me(){ try { return JSON.parse(localStorage.getItem("ys-me")||"{}"); } catch(e){ return {}; } }
 function render(){
-  const box = $("posts"); box.innerHTML = "";
-  const posts = POSTS.slice().sort((a,b)=>b.createdAt-a.createdAt);
-  if (!posts.length) box.appendChild(el("div","empty","No posts yet. Be the first to say hello, and put your country on the board."));
+  const box = $("posts");
+  const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
+  const posts = POSTS.slice().sort((a,b)=>a.createdAt-b.createdAt);
+  const mine = me();
+  box.innerHTML = "";
+  if (!posts.length) box.appendChild(el("div","empty","No messages yet. Say hello first and put your country on the board."));
   for (const p of posts){
-    const c = el("article","card");
+    const key = p.id || (p.name+"|"+p.createdAt);
+    const isMe = mine.name && p.name.toLowerCase()===String(mine.name).toLowerCase() && (p.country||"")===(mine.country||"");
+    const row = el("div","msgrow"+(isMe?" me":"")+(!firstRender && !SEEN.has(key)?" new":""));
+    SEEN.add(key);
     const mini = el("div","mini");
     const code = NAME_TO_CODE[p.country];
     if (code) mini.innerHTML = flagSvg(code); else mini.textContent = (p.country||"··").slice(0,2).toUpperCase();
-    const main = el("div");
-    const hd = el("div","hd");
-    hd.append(el("span","nm",p.name));
-    if (p.country) hd.append(el("span","ct",p.country));
-    hd.append(el("span","when",ago(p.createdAt)));
-    main.append(hd, el("p","msg",p.message));
-    const tags = el("div","tags");
-    if (MOOD[p.mood]) tags.append(el("span","tag",MOOD[p.mood]));
-    if (tags.childNodes.length) main.append(tags);
-    c.append(mini, main); box.appendChild(c);
+    const bub = el("div","bubble");
+    const who = el("div","who"); who.append(el("b",null,p.name)); if (p.country) who.append(el("span",null,p.country));
+    bub.append(who, el("p","txt",p.message), el("span","t",ago(p.createdAt)));
+    row.append(mini, bub); box.appendChild(row);
   }
+  if (firstRender || nearBottom || forceScroll){ box.style.scrollBehavior = firstRender ? "auto" : ""; box.scrollTop = box.scrollHeight; }
+  if (posts.length) firstRender = false; forceScroll = false;
   $("st-posts").textContent = posts.length;
   $("st-countries").textContent = new Set(posts.map(p=>p.country).filter(c=>NAME_TO_CODE[c])).size;
   const counts = {}; posts.forEach(p => { if (NAME_TO_CODE[p.country]) counts[p.country] = (counts[p.country]||0)+1; });
@@ -637,20 +649,22 @@ $("postForm").addEventListener("submit", async e => {
   const msgEl = $("formMsg"); msgEl.className = "form-msg"; msgEl.textContent = "";
   const name = clean($("f-name").value,40), message = clean($("f-msg").value,280);
   const country = $("f-country").value;
-  const mood = (document.querySelector('input[name="mood"]:checked')||{}).value || "";
+  const mood = "";
   const fail = (t, f) => { msgEl.className="form-msg err"; msgEl.textContent=t; if (f) f.focus(); };
-  if (!name) return fail("Add your name so people know who's posting.", $("f-name"));
-  if (!message) return fail("Write a few words about what you're looking forward to.", $("f-msg"));
+  if (!name) return fail("Add your name so people know who's talking.", $("f-name"));
+  if (!message) return fail("Type a message first.", $("f-msg"));
   if (Date.now()-lastPost < 8000) return fail("Wait a few seconds before posting again.");
   if (!Store.add) return fail("The wall is still loading. Try again in a moment.");
   const btn = $("submitBtn"); btn.disabled = true; btn.textContent = "Posting…";
   const post = { name, country, mood, message, createdAt:Date.now() };
   try {
+    try { localStorage.setItem("ys-me", JSON.stringify({name, country})); } catch(err){}
+    forceScroll = true;
     await Store.add(post);
     lastPost = Date.now();
     try { localStorage.setItem("ys-me", JSON.stringify({name, country})); } catch(err){}
-    $("f-msg").value = ""; $("cnt").textContent = "0";
-    msgEl.className = "form-msg ok"; msgEl.textContent = "Posted! Everyone can see it on the wall now.";
+    $("f-msg").value = ""; $("f-msg").style.height=""; $("cnt").textContent = "0";
+    msgEl.className = "form-msg ok"; msgEl.textContent = "Sent. Everyone can see it now.";
   } catch(err){
     fail(err && err.code==="invalid_argument" ? "This link lets you read the wall but not post. Ask the organisers for access." : "Your post didn't save. Check your connection and try again.");
   } finally { btn.disabled = false; btn.textContent = "Post to the wall"; }
