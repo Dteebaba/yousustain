@@ -166,6 +166,15 @@ section.block{padding-block:80px}
 /* culture (dark band) */
 .band-deep .head .theme{color:#fff;font-size:clamp(40px,7vw,84px);font-weight:800;line-height:1;letter-spacing:-.03em}
 .theme span{color:var(--gold)}
+
+/* culture photo: slow zoom in and out */
+.showcase{position:relative;margin-top:36px;border-radius:24px;overflow:hidden;height:clamp(260px,46vw,520px);box-shadow:0 30px 70px rgba(0,0,0,.45);border:1px solid var(--deep-line)}
+.showcase img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:40% 60%;animation:kenburns 16s ease-in-out infinite alternate}
+@keyframes kenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.16) translate(-2%,-3%)}}
+.showcase::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,42,31,0) 45%,rgba(5,42,31,.85) 100%);pointer-events:none}
+.showcase figcaption{position:absolute;left:22px;right:22px;bottom:20px;z-index:1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
+.showcase figcaption b{font-size:clamp(18px,2.4vw,26px);font-weight:800;max-width:28ch;line-height:1.2}
+.showcase .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
 .culture-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:40px}
 .card-d{padding:26px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--deep-line)}
 .card-d h3{font-size:20px;font-weight:800}
@@ -299,7 +308,7 @@ footer b{color:#fff}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .glow,.pill i,.cloth,.cloth::after{animation:none}
+  .glow,.pill i,.cloth,.cloth::after,.showcase img{animation:none}
   .track{animation:none;flex-wrap:wrap;justify-content:center;width:auto;padding-inline:16px;row-gap:14px}
   .track [aria-hidden="true"]{display:none}
   .js .rv{opacity:1;transform:none;transition:none}
@@ -461,6 +470,12 @@ footer b{color:#fff}
         <p class="theme">Many Roots, <span>One Future.</span></p>
         <p style="max-width:60ch">Each country gets its own table, so bring what says “this is home”. Come dressed in your cultural outfit and prepare a short, fun presentation about your country. Start planning with your country squad now.</p>
       </div>
+
+
+      <figure class="showcase rv" style="margin-inline:0">
+        <img src="culture.jpg" alt="A country table at a cultural night: Kenyan flags, beadwork, a gourd, printed fabrics and plates of snacks" loading="lazy">
+        <figcaption><b>This is what “this is home” looks like.</b><span class="chip">Flags · Crafts · Fabrics · Snacks</span></figcaption>
+      </figure>
 
       <div class="culture-grid">
         <div class="card-d rv">
