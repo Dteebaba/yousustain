@@ -415,8 +415,8 @@ footer{padding-block:36px 48px;font-size:14px;color:var(--muted);display:flex;ju
    For the public GitHub Pages version, fill these two values from your
    Supabase project (Settings -> API). See README.md for the table SQL.
    Leave them empty inside Claude, where the built-in shared store is used. */
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const SUPABASE_URL = "https://sbibumysubepwbechmpd.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_5h2f4RjDx9h7EmmUDA4A3w_6lq9yDYV";
 
 /* ============ Countdown ============ */
 const TARGET = Date.UTC(2026, 9, 2, 21, 0, 0); // 3 Oct 2026 00:00 EAT (UTC+3)
@@ -589,7 +589,8 @@ function useLocal(){
 function useSupabase(){
   Store.kind = "supabase";
   const base = SUPABASE_URL.replace(/\/$/,"") + "/rest/v1/wall_posts";
-  const headers = { apikey:SUPABASE_ANON_KEY, Authorization:"Bearer "+SUPABASE_ANON_KEY, "Content-Type":"application/json" };
+  const headers = { apikey:SUPABASE_ANON_KEY, "Content-Type":"application/json" };
+  if (SUPABASE_ANON_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + SUPABASE_ANON_KEY; // legacy anon keys only
   async function load(){
     try {
       const r = await fetch(base+"?select=*&order=created_at.desc&limit=300",{headers});
