@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="logo.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#052A1F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="YouSustain">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>YouSustain Mombasa Countdown</title>
 <meta name="description" content="Countdown to the start of YouSustain in Mombasa on 3 October (00:00 Kenya time), logistics, the cultural night and a live chat for participants.">
 <meta property="og:title" content="YouSustain in Mombasa: the countdown is on">
@@ -277,6 +284,28 @@ footer b{color:#fff}
 @keyframes wordIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes splashOut{to{opacity:0;visibility:hidden}}
 .splash.skip{animation:splashOut .25s ease-in forwards}
+
+/* ============ Add to home screen ============ */
+.install{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);z-index:900;width:min(560px,calc(100% - 24px));display:flex;gap:14px;align-items:center;padding:14px 14px 14px 16px;border-radius:18px;background:var(--deep);color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.35);border:1px solid var(--deep-line);transition:transform .5s cubic-bezier(.2,1.2,.4,1)}
+.install.show{transform:translate(-50%,0)}
+.install img{width:48px;height:48px;border-radius:12px;background:#fff;flex:none}
+.install .it{flex:1;min-width:0}
+.install b{display:block;font-size:15px;line-height:1.25}
+.install span{font-size:13px;color:rgba(255,255,255,.75)}
+.install .btn{padding:10px 16px;font-size:14px}
+.install .x{flex:none;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:950;background:rgba(5,42,31,.6);display:grid;place-items:end center;padding:12px}
+.sheet[hidden]{display:none}
+.sheet .card{width:min(460px,100%);background:#fff;color:var(--ink);border-radius:22px;padding:22px 22px 18px;margin-bottom:env(safe-area-inset-bottom,0px);animation:up .35s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet h3{font-size:20px;font-weight:800}
+.sheet ol{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:s}
+.sheet li{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;font-size:15px;counter-increment:s}
+.sheet li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.sheet li svg{width:18px;height:18px;vertical-align:-3px;margin-inline:2px}
+.sheet .row{display:flex;justify-content:flex-end;margin-top:18px}
+.foot-link{background:none;border:0;padding:0;font:inherit;color:#fff;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.standalone .install,.standalone .foot-link{display:none}
 
 @media (max-width:960px){
   .cities{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -565,10 +594,26 @@ footer b{color:#fff}
   </section>
 </main>
 
+
+<div class="install" id="install" role="dialog" aria-label="Add YouSustain to your home screen" hidden>
+  <img src="icon-192.png" alt="">
+  <div class="it"><b>Keep the countdown on your phone</b><span>Add YouSustain to your home screen. It opens like an app.</span></div>
+  <button class="btn gold" type="button" id="installBtn">Add</button>
+  <button class="x" type="button" id="installX" aria-label="Not now">×</button>
+</div>
+<div class="sheet" id="sheet" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h3 id="sheetTitle">Add to your home screen</h3>
+    <ol id="sheetSteps"></ol>
+    <div class="row"><button class="btn" type="button" id="sheetClose">Got it</button></div>
+  </div>
+</div>
+
 <footer>
   <div class="stripe"></div>
   <div class="wrap">
     <span><b>YouSustain</b> · Shanzu, Mombasa · October</span>
+    <button class="foot-link" type="button" id="footInstall">Add to home screen</button>
     <span>Kenya emergency: <b>999</b> or <b>112</b></span>
   </div>
 </footer>
@@ -655,6 +700,47 @@ const PARADE = [].concat(["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","I
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {rootMargin:"0px 0px -8% 0px"});
   els.forEach(e => io.observe(e));
   setTimeout(() => els.forEach(e=>e.classList.add("in")), 2500);
+})();
+
+
+/* ============ Add to home screen (installable app) ============ */
+(function(){
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (standalone){ document.documentElement.classList.add("standalone"); }
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+  const bar = $("install"), sheet = $("sheet"), steps = $("sheetSteps");
+  if (!bar) return;
+  const ua = navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/i.test(ua);
+  let deferred = null;
+  const SHARE = '<svg viewBox="0 0 24 24" fill="none" stroke="#0E8A2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+  const DOTS = '<svg viewBox="0 0 24 24" fill="#0E8A2F"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>';
+  function showSteps(){
+    let html;
+    if (isIOS) html = `<li><span>Open this page in <b>Safari</b>.</span></li><li><span>Tap the <b>Share</b> button ${SHARE} at the bottom of the screen.</span></li><li><span>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</span></li>`;
+    else if (isAndroid) html = `<li><span>Tap the menu ${DOTS} at the top right of Chrome.</span></li><li><span>Tap <b>Add to Home screen</b> or <b>Install app</b>.</span></li><li><span>Tap <b>Add</b> or <b>Install</b> to confirm.</span></li>`;
+    else html = `<li><span>In Chrome or Edge, click the install icon at the right end of the address bar, or open the browser menu.</span></li><li><span>Choose <b>Install YouSustain</b> or <b>Add to Home screen</b>.</span></li><li><span>It opens in its own window, like an app.</span></li>`;
+    steps.innerHTML = html; sheet.hidden = false; $("sheetClose").focus();
+  }
+  async function install(){
+    if (deferred){ deferred.prompt(); const r = await deferred.userChoice.catch(()=>null); deferred = null; hide(); if (r && r.outcome === "accepted") remember(); }
+    else { hide(); showSteps(); }
+  }
+  function remember(){ try { localStorage.setItem("ys-install-dismissed", String(Date.now())); } catch(e){} }
+  function dismissedRecently(){ try { return Date.now() - Number(localStorage.getItem("ys-install-dismissed")||0) < 3*24*3600*1000; } catch(e){ return false; } }
+  function show(){ if (standalone || dismissedRecently()) return; bar.hidden = false; requestAnimationFrame(()=>requestAnimationFrame(()=>bar.classList.add("show"))); }
+  function hide(){ bar.classList.remove("show"); setTimeout(()=>{ bar.hidden = true; }, 500); }
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; });
+  window.addEventListener("appinstalled", () => { hide(); remember(); });
+  $("installBtn").addEventListener("click", install);
+  $("installX").addEventListener("click", () => { hide(); remember(); });
+  $("footInstall").addEventListener("click", install);
+  $("sheetClose").addEventListener("click", () => { sheet.hidden = true; });
+  sheet.addEventListener("click", e => { if (e.target === sheet) sheet.hidden = true; });
+  if (isIOS || isAndroid || "onbeforeinstallprompt" in window) setTimeout(show, 5000);
 })();
 
 /* ============ Logistics download ============ */

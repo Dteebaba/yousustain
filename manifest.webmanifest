@@ -1,0 +1,16 @@
+{
+  "name": "YouSustain in Mombasa",
+  "short_name": "YouSustain",
+  "description": "Countdown to 3 October, logistics, the cultural night and the squad chat.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#052A1F",
+  "theme_color": "#052A1F",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
