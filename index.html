@@ -93,8 +93,6 @@ a{color:inherit}
 .unit.sec{background:var(--gold);border-color:var(--gold);color:var(--deep)}
 .unit.sec .l{color:rgba(5,42,31,.7)}
 .live{display:none;font-size:clamp(30px,5vw,52px);font-weight:800;color:var(--gold)}
-.hero.done .clock{display:none}
-.hero.done .live{display:block}
 .when{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:15px;color:rgba(255,255,255,.75)}
 .when b{color:#fff;font-weight:700}
 
@@ -307,6 +305,26 @@ footer b{color:#fff}
 .foot-link{background:none;border:0;padding:0;font:inherit;color:#fff;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .standalone .install,.standalone .foot-link{display:none}
 
+/* ============ Phases: before, during, after ============ */
+.clock-lbl{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:-12px}
+.clock-lbl b{color:var(--gold)}
+.progress{max-width:820px;display:grid;gap:8px}
+.progress .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.progress .bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--green-lt),var(--gold));transition:width 1s ease}
+.progress span{font-size:14px;color:rgba(255,255,255,.8);font-weight:600}
+.replay{justify-self:start;display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.1);border:1px solid var(--deep-line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.replay:hover{background:rgba(255,255,255,.18)}
+.hero.p-end .clock,.hero.p-end .clock-lbl,.hero.p-end .when{display:none}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:800}
+.pop{position:fixed;inset:0;z-index:850;display:grid;place-items:center;pointer-events:none;text-align:center;padding:24px}
+.pop{background:radial-gradient(ellipse at center,rgba(5,42,31,.82) 0%,rgba(5,42,31,.45) 55%,rgba(5,42,31,0) 80%);animation:popBg 4.2s ease-in-out forwards}
+.pop div{animation:popIn 4.2s ease-in-out forwards}
+@keyframes popBg{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.pop b{display:block;font-size:clamp(44px,10vw,120px);font-weight:800;line-height:1;color:#fff;letter-spacing:-.03em;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+.pop b em{font-style:normal;color:var(--gold)}
+.pop span{display:block;margin-top:12px;font-size:clamp(18px,3vw,28px);font-weight:700;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.5)}
+@keyframes popIn{0%{opacity:0;transform:scale(.6)}15%{opacity:1;transform:scale(1.05)}25%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.04)}}
+
 @media (max-width:960px){
   .cities{grid-template-columns:repeat(2,minmax(0,1fr))}
   .facts{grid-template-columns:1fr 1fr}
@@ -383,20 +401,25 @@ footer b{color:#fff}
     </div>
 
     <div class="hero-in">
-      <span class="pill"><i></i>We begin · Saturday 3 October · Mombasa</span>
-      <div class="clock" role="timer" aria-label="Time left until 3 October, 00:00 Kenya time">
+      <span class="pill"><i></i><span id="pillTxt">We begin · Saturday 3 October · Mombasa</span></span>
+      <div class="clock-lbl" id="clockLbl">Until we begin · <b>Saturday 3 October</b></div>
+      <div class="clock" role="timer" id="clock" aria-label="Countdown">
         <div class="unit"><span class="n" id="d">--</span><span class="l">Days</span></div>
         <div class="unit"><span class="n" id="h">--</span><span class="l">Hours</span></div>
         <div class="unit"><span class="n" id="m">--</span><span class="l">Minutes</span></div>
         <div class="unit sec"><span class="n" id="s">--</span><span class="l">Seconds</span></div>
       </div>
-      <div class="live">It's 3 October. Karibuni Mombasa!</div>
-      <h1>Karibuni <em>Mombasa.</em> We can't wait to see you.</h1>
-      <p class="sub">Seven countries, one coast. On 3 October we begin a month of learning, exchange and culture together in Shanzu.</p>
+      <div class="progress" id="progress" hidden><div class="bar"><i id="progBar"></i></div><span id="progTxt"></span></div>
+      <h1 id="heroTitle">Karibuni <em>Mombasa.</em> We can't wait to see you.</h1>
+      <p class="sub" id="heroSub">Seven countries, one coast. On 3 October we begin a month of learning, exchange and culture together in Shanzu.</p>
       <div class="when">
-        <span>Zero hour where you are: <b id="yoursBig">…</b></span>
+        <span><span id="whenLbl">Zero hour where you are:</span> <b id="yoursBig">…</b></span>
         <span id="yoursTz"></span>
       </div>
+      <button class="replay" type="button" id="replay" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+        Replay the fireworks
+      </button>
     </div>
   </div>
 
@@ -410,9 +433,9 @@ footer b{color:#fff}
   <section class="block" id="times" style="padding-top:48px">
     <div class="wrap">
       <div class="head rv">
-        <span class="eyebrow">Coming from outside Kenya?</span>
-        <h2>When the clock hits zero</h2>
-        <p>Midnight in Nairobi, in every participating country's time.</p>
+        <span class="eyebrow" id="timesEyebrow">Coming from outside Kenya?</span>
+        <h2 id="timesTitle">When the clock hits zero</h2>
+        <p id="timesSub">Midnight in Nairobi, in every participating country's time.</p>
       </div>
       <div class="cities rv" id="cities"></div>
     </div>
@@ -554,8 +577,8 @@ footer b{color:#fff}
     <div class="wrap">
       <div class="head rv">
         <span class="eyebrow">The squad chat</span>
-        <h2>Mombasa is days away. How are you feeling?</h2>
-        <p>Say hello before we meet. Share what you're looking forward to, what you're bringing from home, or what your squad is planning. Everyone from all seven countries can read it.</p>
+        <h2 id="wallTitle">Mombasa is days away. How are you feeling?</h2>
+        <p id="wallSub">Say hello before we meet. Share what you're looking forward to, what you're bringing from home, or what your squad is planning. Everyone from all seven countries can read it.</p>
       </div>
       <div class="wall">
         <div class="chat">
@@ -597,7 +620,7 @@ footer b{color:#fff}
 
 <div class="install" id="install" role="dialog" aria-label="Add YouSustain to your home screen" hidden>
   <img src="icon-192.png" alt="">
-  <div class="it"><b>Keep the countdown on your phone</b><span>Add YouSustain to your home screen. It opens like an app.</span></div>
+  <div class="it"><b>Keep YouSustain on your phone</b><span>Add YouSustain to your home screen. It opens like an app.</span></div>
   <button class="btn gold" type="button" id="installBtn">Add</button>
   <button class="x" type="button" id="installX" aria-label="Not now">×</button>
 </div>
@@ -608,6 +631,9 @@ footer b{color:#fff}
     <div class="row"><button class="btn" type="button" id="sheetClose">Got it</button></div>
   </div>
 </div>
+
+<canvas id="fx" aria-hidden="true" hidden></canvas>
+<div class="pop" id="pop" aria-live="polite" hidden></div>
 
 <footer>
   <div class="stripe"></div>
@@ -626,31 +652,159 @@ footer b{color:#fff}
 const SUPABASE_URL = "https://sbibumysubepwbechmpd.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_5h2f4RjDx9h7EmmUDA4A3w_6lq9yDYV";
 
-/* ============ Countdown ============ */
-const TARGET = Date.UTC(2026, 9, 2, 21, 0, 0); // 3 Oct 2026 00:00 EAT (UTC+3)
+/* ============ Countdown: three phases ============ */
+const START = Date.UTC(2026, 9, 2, 21, 0, 0);   // Sat 3 Oct 2026, 00:00 EAT: we begin
+const END   = Date.UTC(2026, 9, 25, 21, 0, 0);  // Mon 26 Oct 2026, 00:00 EAT: the last day
+const TOTAL_DAYS = 24;                           // 3 to 26 October
+// Preview the later phases by adding #preview-live or #preview-end to the link
+const SHIFT = ({"#preview-live": START + 5*3600e3, "#preview-end": END + 60e3}[location.hash] || 0);
+const OFFSET = SHIFT ? SHIFT - Date.now() : 0;
+const now = () => Date.now() + OFFSET;
 const pad = n => String(n).padStart(2, "0");
 const $ = id => document.getElementById(id);
 const RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const phaseAt = t => t < START ? "pre" : t < END ? "live" : "end";
+let PHASE = null, target = new Date(START);
+
+const COPY = {
+  pre: {
+    pill: "We begin · Saturday 3 October · Mombasa",
+    clock: "Until we begin · <b>Saturday 3 October</b>",
+    title: "Karibuni <em>Mombasa.</em> We can't wait to see you.",
+    sub: "Seven countries, one coast. On 3 October we begin a month of learning, exchange and culture together in Shanzu.",
+    when: "Zero hour where you are:",
+    tEye: "Coming from outside Kenya?", tTitle: "When the clock hits zero", tSub: "Midnight in Nairobi, in every participating country's time.",
+    wTitle: "Mombasa is days away. How are you feeling?",
+    wSub: "Say hello before we meet. Share what you're looking forward to, what you're bringing from home, or what your squad is planning. Everyone from all seven countries can read it."
+  },
+  live: {
+    pill: "We're live in Mombasa",
+    clock: "Until the last day · <b>Monday 26 October</b>",
+    title: "Karibuni <em>Mombasa!</em> Welcome, everyone.",
+    sub: "Seven countries, one coast, and the journey has begun. Learn, share, explore, and make every day count.",
+    when: "The last day begins where you are:",
+    tEye: "Following from home?", tTitle: "When the last day begins", tSub: "Midnight on Monday 26 October in Nairobi, in every participating country's time.",
+    wTitle: "We're in Mombasa! How's it going?",
+    wSub: "Share your highlights, shout out your squad, and tell everyone what you're enjoying most. Everyone from all seven countries can read it."
+  },
+  end: {
+    pill: "That's a wrap · 3–26 October 2026",
+    clock: "",
+    title: "Thank you for <em>coming!</em> Asante sana.",
+    sub: "Seven countries, one coast, 24 days of learning, exchange and culture. Safe travels home, and stay in touch.",
+    when: "",
+    tEye: "", tTitle: "", tSub: "",
+    wTitle: "Leave a goodbye message",
+    wSub: "Share your favourite memory from Mombasa and say goodbye to your new friends from all seven countries."
+  }
+};
+
+function applyPhase(p){
+  PHASE = p; const c = COPY[p];
+  target = new Date(p === "pre" ? START : END);
+  $("hero").classList.toggle("p-end", p === "end");
+  $("pillTxt").textContent = c.pill;
+  $("clockLbl").innerHTML = c.clock;
+  $("heroTitle").innerHTML = c.title;
+  $("heroSub").textContent = c.sub;
+  $("whenLbl").textContent = c.when;
+  $("progress").hidden = p === "pre";
+  $("replay").hidden = p === "pre" || RM;
+  $("times").hidden = p === "end";
+  if (p !== "end"){ $("timesEyebrow").textContent = c.tEye; $("timesTitle").textContent = c.tTitle; $("timesSub").textContent = c.tSub; }
+  $("wallTitle").textContent = c.wTitle; $("wallSub").textContent = c.wSub;
+  if (typeof renderTimes === "function") renderTimes();
+}
+
+function updateProgress(t){
+  if (PHASE === "pre") return;
+  const day = PHASE === "end" ? TOTAL_DAYS : Math.min(TOTAL_DAYS, Math.floor((t - START) / 864e5) + 1);
+  const pct = PHASE === "end" ? 100 : Math.min(100, (t - START) / (END + 864e5 - START) * 100);
+  $("progBar").style.width = pct.toFixed(1) + "%";
+  $("progTxt").textContent = PHASE === "end" ? "24 of 24 days · Completed" : "Day " + day + " of " + TOTAL_DAYS;
+  if (PHASE === "live") $("pillTxt").textContent = "We're live · Day " + day + " of " + TOTAL_DAYS + " · Mombasa";
+}
+
 function tick(){
-  const ms = TARGET - Date.now();
-  if (ms <= 0){ $("hero").classList.add("done"); return; }
-  const s = Math.floor(ms/1000);
+  const t = now(), p = phaseAt(t);
+  if (p !== PHASE){
+    const was = PHASE; applyPhase(p);
+    if (was === "pre" && p === "live") celebrate("live", 16000);
+    if (was === "live" && p === "end") celebrate("end", 9000);
+  }
+  updateProgress(t);
+  if (p === "end") return;
+  const s = Math.max(0, Math.floor((target - t) / 1000));
   $("d").textContent = pad(Math.floor(s/86400));
   $("h").textContent = pad(Math.floor(s%86400/3600));
   $("m").textContent = pad(Math.floor(s%3600/60));
   $("s").textContent = pad(s%60);
   if (!RM && $("s").animate) $("s").animate([{transform:"translateY(-8px)",opacity:.35},{transform:"none",opacity:1}],{duration:320,easing:"ease-out"});
 }
-tick(); setInterval(tick, 1000);
+
+/* ============ Fireworks ============ */
+const fx = (function(){
+  const cv = $("fx"), ctx = cv.getContext && cv.getContext("2d");
+  const COLS = ["#23B45A","#F4B400","#D7263D","#2457C5","#FFFFFF","#FFD54A"];
+  let parts = [], rockets = [], until = 0, raf = 0, W = 0, H = 0, last = 0;
+  function size(){ const dpr = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
+  addEventListener("resize", () => { if (!cv.hidden) size(); });
+  function launch(){
+    rockets.push({x: W*(.12+Math.random()*.76), y: H+10, vx: (Math.random()-.5)*1.4, vy: -(H*.013+Math.random()*H*.006), ty: H*(.1+Math.random()*.38), c: COLS[Math.floor(Math.random()*COLS.length)]});
+  }
+  function burst(r){
+    const n = 70 + Math.floor(Math.random()*50), c2 = COLS[Math.floor(Math.random()*COLS.length)];
+    for (let i=0;i<n;i++){
+      const a = Math.random()*Math.PI*2, sp = 1.5 + Math.random()*4.5;
+      parts.push({x:r.x, y:r.y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, life:1, decay:.008+Math.random()*.012, c: i%3 ? r.c : c2, s: 1.6+Math.random()*1.8});
+    }
+  }
+  function frame(ts){
+    const going = performance.now() < until;
+    if (going && ts - last > 260 + Math.random()*380){ launch(); if (Math.random() < .35) launch(); last = ts; }
+    ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = "rgba(0,0,0,.22)"; ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation = "lighter";
+    rockets = rockets.filter(r => { r.x += r.vx; r.y += r.vy; r.vy += .05;
+      ctx.fillStyle = r.c; ctx.beginPath(); ctx.arc(r.x, r.y, 2.4, 0, 7); ctx.fill();
+      if (r.y <= r.ty || r.vy >= 0){ burst(r); return false; } return true; });
+    parts = parts.filter(p => { p.x += p.vx; p.y += p.vy; p.vx *= .985; p.vy = p.vy*.985 + .045; p.life -= p.decay;
+      if (p.life <= 0) return false; ctx.globalAlpha = Math.max(0,p.life); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); return true; });
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+    if (going || parts.length || rockets.length) raf = requestAnimationFrame(frame);
+    else { ctx.clearRect(0,0,W,H); cv.hidden = true; raf = 0; }
+  }
+  return function(ms){
+    if (!ctx || RM) return;
+    cv.hidden = false; size(); until = performance.now() + ms;
+    if (!raf) raf = requestAnimationFrame(frame);
+  };
+})();
+
+function celebrate(kind, ms){
+  fx(ms);
+  const pop = $("pop");
+  pop.innerHTML = kind === "end"
+    ? "<div><b>Asante <em>sana!</em></b><span>Thank you for coming</span></div>"
+    : "<div><b>Karibuni <em>Mombasa!</em></b><span>Welcome, everyone</span></div>";
+  pop.hidden = false; clearTimeout(celebrate.t); celebrate.t = setTimeout(() => { pop.hidden = true; }, 4300);
+}
+$("replay").addEventListener("click", () => celebrate(PHASE === "end" ? "end" : "live", 9000));
 
 /* ============ Time zones ============ */
-const target = new Date(TARGET);
 const fmtT = tz => new Intl.DateTimeFormat("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",hour12:false}).format(target);
 const fmtD = tz => new Intl.DateTimeFormat("en-GB",{timeZone:tz,weekday:"short",day:"numeric",month:"short"}).format(target);
 let myTz = "UTC";
 try { myTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch(e){}
-$("yoursBig").textContent = fmtD(myTz) + " at " + fmtT(myTz);
-$("yoursTz").textContent = "(" + myTz.replace(/_/g," ") + ")";
+function renderTimes(){
+  $("yoursBig").textContent = fmtD(myTz) + " at " + fmtT(myTz);
+  $("yoursTz").textContent = "(" + myTz.replace(/_/g," ") + ")";
+  if (window.__citiesReady) renderCities();
+}
+
+tick(); setInterval(tick, 1000);
+// Opening the page during or after the programme: celebrate once the intro has finished
+if (PHASE !== "pre") setTimeout(() => celebrate(PHASE, PHASE === "live" && now() - START < 864e5 ? 14000 : 8000), RM ? 0 : 3000);
+
 const CITIES = [
   ["Nairobi · Mombasa","Africa/Nairobi","KE",true],["Kampala","Africa/Kampala","UG"],["Lusaka","Africa/Lusaka","ZM"],
   ["Maputo","Africa/Maputo","MZ"],["Lagos","Africa/Lagos","NG"],["Rome","Europe/Rome","IT"],["Berlin","Europe/Berlin","DE"]
@@ -685,7 +839,7 @@ const FLAGS = {
   ZM:["Zambia", `<rect width="30" height="20" fill="#198A00"/><rect x="19.5" y="7.5" width="3.6" height="12.5" fill="#DE2010"/><rect x="23.1" y="7.5" width="3.5" height="12.5" fill="#000"/><rect x="26.6" y="7.5" width="3.4" height="12.5" fill="#EF7D00"/><polygon points="20.5,3 25,5 29.5,3 27,5.6 25,6.8 23,5.6" fill="#EF7D00"/>`],
 };
 const flagSvg = code => FLAGS[code] ? `<svg viewBox="0 0 30 20" preserveAspectRatio="none" aria-hidden="true">${FLAGS[code][1]}</svg>` : "";
-renderCities();
+window.__citiesReady = true; renderTimes();
 const COUNTRIES = ["KE","DE","IT","MZ","NG","UG","ZM"];
 const PARADE = [].concat(["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","IT","UG","MZ","ZM"]);
 {
