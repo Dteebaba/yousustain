@@ -181,6 +181,50 @@ section.block{padding-block:80px}
 .showcase figcaption{position:absolute;left:22px;right:22px;bottom:20px;z-index:1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
 .showcase figcaption b{font-size:clamp(18px,2.4vw,26px);font-weight:800;max-width:28ch;line-height:1.2}
 .showcase .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
+/* people's awards */
+.aw-stats{display:flex;gap:26px;margin-bottom:18px}
+.aw-stats b{display:block;font-size:30px;font-weight:800;color:var(--accent);line-height:1.1}
+.awchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.awchip{font:inherit;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);cursor:pointer}
+.awchip:hover{border-color:var(--accent);color:var(--accent)}
+.awchip.on{background:var(--deep);border-color:var(--deep);color:#fff}
+.aw-grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:24px;align-items:start}
+.aw-form{background:var(--deep);color:#fff;border-radius:20px;padding:24px;display:grid;gap:12px;position:relative;overflow:hidden}
+.aw-form::after{content:"";position:absolute;right:-50px;top:-50px;width:160px;height:160px;border-radius:50%;background:rgba(244,180,0,.18)}
+.aw-form h3{font-size:22px;font-weight:800;position:relative;z-index:1}
+.aw-form h3 span{color:var(--gold)}
+.aw-form label{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);display:block;margin-bottom:5px}
+.aw-form input,.aw-form select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:0;border-radius:10px;padding:11px 12px}
+.aw-form .btn{width:100%;margin-top:4px}
+.aw-form .form-msg{color:rgba(255,255,255,.85)}
+.aw-form .form-msg.err{color:#ffb3b3}
+.aw-form .form-msg.ok{color:#9ff0bb}
+.aw-mine{font-size:13px;color:var(--gold);min-height:1em}
+.aw-board{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
+.aw-board h3{font-size:20px;font-weight:800;margin-bottom:12px}
+.awrow{position:relative;display:grid;grid-template-columns:30px auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;overflow:hidden;margin-top:6px;border:1px solid var(--line)}
+.awrow .bar{position:absolute;left:0;top:0;bottom:0;background:rgba(14,138,47,.09);transition:width .6s}
+.awrow > *:not(.bar){position:relative}
+.awrow .rank{font-weight:800;color:var(--muted);text-align:center}
+.awrow.first{border-color:var(--gold);background:#FFFBEA}
+.awrow.first .bar{background:rgba(244,180,0,.22)}
+.awrow.first .rank{color:#B07F00;font-size:18px}
+.awrow .mini{width:30px;height:20px}
+.awrow .who b{display:block;font-weight:700}
+.awrow .who small{font-size:12px;color:var(--muted)}
+.awrow .n{font-weight:800;font-size:14px;color:var(--accent);white-space:nowrap}
+.aw-empty{color:var(--muted);padding:16px 0}
+.aw-overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:28px}
+.awcard{text-align:left;font:inherit;display:grid;gap:6px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;transition:transform .2s,border-color .2s}
+.awcard:hover{transform:translateY(-2px);border-color:var(--accent)}
+.awcard.on{border-color:var(--deep);box-shadow:0 0 0 2px var(--deep) inset}
+.awcard .lbl{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.awcard .win{display:flex;align-items:center;gap:8px}
+.awcard .win .mini{width:26px;height:18px}
+.awcard .win b{font-size:16px;font-weight:800;color:var(--ink)}
+.awcard .cnt,.awcard .none{font-size:13px;color:var(--muted)}
+@media (max-width:860px){.aw-grid{grid-template-columns:1fr}}
+
 /* photo slideshow + albums */
 .stage{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:16/8;min-height:300px;background:#031c15;box-shadow:0 30px 70px rgba(0,0,0,.45);border:1px solid var(--deep-line)}
 .stage .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
@@ -458,6 +502,7 @@ footer b{color:#fff}
         <a href="#logistics">Logistics</a>
         <a href="#culture">Cultural night</a>
         <a href="#photos">Photos</a>
+        <a href="#awardsSec">Vote</a>
         <a href="#wall" class="cta">Join the chat</a>
       </nav>
     </div>
@@ -663,6 +708,35 @@ footer b{color:#fff}
     </div>
   </section>
 
+  <section class="block band-mist" id="awardsSec">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">The people's awards</span>
+        <h2>Vote for your Mombasa favourites</h2>
+        <p>Who's the friendliest? The funniest? The best dancer? Pick a category, type anyone's name, and watch the leaderboard change live. One vote per category on each phone.</p>
+      </div>
+      <div class="aw-stats"><div><b id="awTotal">0</b><span class="label">Votes cast</span></div><div><b id="awPeople">0</b><span class="label">People nominated</span></div></div>
+      <div class="awchips" id="awChips" role="group" aria-label="Award categories"></div>
+      <div class="aw-grid">
+        <form class="aw-form" id="awForm" novalidate>
+          <h3>Vote: <span id="awCatTitle">Most Friendly</span></h3>
+          <div><label for="aw-nominee">Who gets your vote?</label><input type="text" id="aw-nominee" list="awNames" maxlength="40" autocomplete="off" placeholder="Type their name"></div>
+          <div><label for="aw-country">Their country</label><select id="aw-country"></select></div>
+          <div><label for="aw-voter">Your name (optional)</label><input type="text" id="aw-voter" maxlength="40" autocomplete="name" placeholder="Your name"></div>
+          <datalist id="awNames"></datalist>
+          <p class="aw-mine" id="awMine"></p>
+          <button class="btn gold" type="submit" id="awSubmit">Cast my vote</button>
+          <p class="form-msg" id="awMsg" role="status"></p>
+        </form>
+        <div class="aw-board">
+          <h3>Leaderboard</h3>
+          <div id="awBoard"></div>
+        </div>
+      </div>
+      <div class="aw-overview" id="awOverview"></div>
+    </div>
+  </section>
+
   <section class="block" id="wall">
     <div class="wrap">
       <div class="head rv">
@@ -775,7 +849,7 @@ const COPY = {
     when: "The last day begins where you are:",
     tEye: "Following from home?", tTitle: "When the last day begins", tSub: "Midnight on Monday 26 October in Nairobi, in every participating country's time.",
     wTitle: "We're in Mombasa! How's it going?",
-    wSub: "Share your highlights, shout out your squad, and tell everyone what you're enjoying most. Everyone from all seven countries can read it."
+    wSub: "Shout out a friend, thank someone who made your day, or share your favourite moment so far. Tap an idea below to get started. Everyone from all seven countries can read it."
   },
   end: {
     pill: "That's a wrap · 3–26 October 2026",
@@ -801,9 +875,11 @@ function applyPhase(p){
   $("progress").hidden = p === "pre";
   $("replay").hidden = p === "pre" || RM;
   $("times").hidden = p === "end";
+  if ($("awardsSec")) $("awardsSec").hidden = p === "pre";
+  if (typeof drawStarters === "function") drawStarters();
   $("hero").classList.toggle("p-live", p === "live");
   const main = document.querySelector("main");
-  const order = p === "pre" ? ["times","logistics","culture","photos","wall"] : ["photos","wall","culture","logistics","times"];
+  const order = p === "pre" ? ["times","logistics","culture","photos","awardsSec","wall"] : ["photos","wall","awardsSec","culture","logistics","times"];
   order.forEach(id => { const el = $(id); if (el) main.appendChild(el); });
   if (p !== "end"){ $("timesEyebrow").textContent = c.tEye; $("timesTitle").textContent = c.tTitle; $("timesSub").textContent = c.tSub; }
   $("wallTitle").textContent = c.wTitle; $("wallSub").textContent = c.wSub;
@@ -900,7 +976,7 @@ let myTz = "UTC";
 try { myTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch(e){}
 function renderTimes(){
   $("yoursBig").textContent = fmtD(myTz) + " at " + fmtT(myTz);
-  $("yoursTz").textContent = "(" + myTz.replace(/_/g," ") + ")";
+  $("yoursTz").textContent = "· your time in " + myTz.split("/").pop().replace(/_/g," ");
   if (window.__citiesReady) renderCities();
 }
 
@@ -1112,17 +1188,28 @@ $("chatFlags").innerHTML = COUNTRIES.map(c=>`<div class="mini">${flagSvg(c)}</di
 }
 $("f-msg").addEventListener("input", e => { const t=e.target; $("cnt").textContent = t.value.length; t.style.height="auto"; t.style.height=Math.min(t.scrollHeight,160)+"px"; });
 $("f-msg").addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && !e.isComposing && window.matchMedia("(hover:hover)").matches){ e.preventDefault(); $("postForm").requestSubmit(); } });
-const STARTERS = ["I can't wait to…","From home I'm bringing…","Our squad's presentation will be…","The food I want everyone to try is…","Mombasa, get ready for…"];
-STARTERS.forEach(t => {
-  const b = document.createElement("button"); b.type = "button"; b.textContent = t;
-  b.addEventListener("click", () => {
-    const ta = $("f-msg"); const base = t.replace(/…$/,"") + " ";
-    ta.value = ta.value.trim() ? ta.value.trim() + "\n" + base : base;
-    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
-    $("cnt").textContent = ta.value.length;
+const STARTERS = {
+  pre: ["I can't wait to…","From home I'm bringing…","Our squad's presentation will be…","The food I want everyone to try is…","Mombasa, get ready for…"],
+  live: ["Shout-out to … for…","Thank you, …, for…","My favourite moment so far…","Today I learned…","To my new friend from …:","Can't stop laughing about…"],
+  end: ["My favourite memory is…","Thank you, …, for…","To my new friends:","I'll miss…","See you again in…"]
+};
+function drawStarters(){
+  if (!window.__startersReady) return;
+  const box = $("starters"); if (!box) return; box.innerHTML = "";
+  (STARTERS[PHASE] || STARTERS.pre).forEach(t => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = t;
+    b.addEventListener("click", () => {
+      const ta = $("f-msg"); const base = t.replace(/…$/,"").replace(/…/g,"___") + " ";
+      ta.value = ta.value.trim() ? ta.value.trim() + "\n" + base : base;
+      ta.focus();
+      const gap = ta.value.indexOf("___");
+      if (gap >= 0) ta.setSelectionRange(gap, gap + 3); else ta.setSelectionRange(ta.value.length, ta.value.length);
+      $("cnt").textContent = ta.value.length;
+    });
+    box.appendChild(b);
   });
-  $("starters").appendChild(b);
-});
+}
+window.__startersReady = true; drawStarters();
 try {
   const d = JSON.parse(localStorage.getItem("ys-me")||"{}");
   if (d.name) $("f-name").value = d.name;
@@ -1260,6 +1347,133 @@ $("postForm").addEventListener("submit", async e => {
     fail(err && err.code==="invalid_argument" ? "This link lets you read the wall but not post. Ask the organisers for access." : "Your post didn't save. Check your connection and try again.");
   } finally { btn.disabled = false; btn.textContent = "Post to the wall"; }
 });
+/* ============ Mombasa Awards: people's vote ============ */
+const AWARDS = [
+  ["friendly","Most Friendly"],["interesting","Most Interesting"],["adorable","Most Adorable"],
+  ["funny","Funniest"],["helpful","Most Helpful"],["dancer","Best Dancer"],
+  ["dressed","Best Dressed"],["party","Life of the Party"],["storyteller","Best Storyteller"],
+  ["late","Most Likely to Be Late"],["photo","Most Photogenic"],["leader","Natural Leader"]
+];
+(function(){
+  if (!$("awardsSec")) return;
+  const AW = Object.fromEntries(AWARDS);
+  let VOTES = [], cat = AWARDS[0][0], ready = false, offline = false;
+  const keyOf = n => n.trim().toLowerCase().replace(/\s+/g," ");
+  const cap = n => n.trim().replace(/\s+/g," ").replace(/\b\w/g, c => c.toUpperCase());
+  let device = "";
+  try { device = localStorage.getItem("ys-device") || ""; if (!device){ device = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()); localStorage.setItem("ys-device", device); } } catch(e){ device = String(Math.random()).slice(2) + Date.now(); }
+  const myVotes = () => { try { return JSON.parse(localStorage.getItem("ys-votes")||"{}"); } catch(e){ return {}; } };
+  const saveMine = (c, n) => { try { const m = myVotes(); m[c] = n; localStorage.setItem("ys-votes", JSON.stringify(m)); } catch(e){} };
+
+  /* category chips */
+  const chips = $("awChips");
+  AWARDS.forEach(([id, label]) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "awchip"; b.dataset.id = id; b.textContent = label;
+    b.addEventListener("click", () => { cat = id; draw(); });
+    chips.appendChild(b);
+  });
+  /* country select */
+  const cs = $("aw-country");
+  [["","Their country (optional)"]].concat(COUNTRIES.map(c => [FLAGS[c][0], FLAGS[c][0]])).forEach(([v,t]) => { const o = document.createElement("option"); o.value = v; o.textContent = t; cs.appendChild(o); });
+  try { const me = JSON.parse(localStorage.getItem("ys-me")||"{}"); if (me.name) $("aw-voter").value = me.name; } catch(e){}
+
+  function tally(c){
+    const m = new Map();
+    VOTES.filter(v => v.category === c && v.nominee).forEach(v => {
+      const k = keyOf(v.nominee); if (!k) return;
+      const e = m.get(k) || {n:0, names:{}, countries:{}};
+      e.n++; e.names[cap(v.nominee)] = (e.names[cap(v.nominee)]||0)+1; if (v.country) e.countries[v.country] = (e.countries[v.country]||0)+1;
+      m.set(k, e);
+    });
+    const top = o => Object.entries(o).sort((a,b)=>b[1]-a[1])[0];
+    return [...m.values()].map(e => ({name: top(e.names)[0], country: (top(e.countries)||[""])[0], n: e.n})).sort((a,b)=> b.n-a.n || a.name.localeCompare(b.name));
+  }
+  function el(tag, cls, txt){ const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function flagMini(country){ const m = el("div","mini"); const code = NAME_TO_CODE[country]; if (code) m.innerHTML = flagSvg(code); else m.textContent = "··"; return m; }
+
+  function draw(){
+    document.querySelectorAll(".awchip").forEach(b => b.classList.toggle("on", b.dataset.id === cat));
+    $("awCatTitle").textContent = AW[cat];
+    const mine = myVotes()[cat];
+    $("awMine").textContent = mine ? "You voted for " + mine + " in this category." : "";
+    $("awSubmit").disabled = !!mine || offline;
+    $("awSubmit").textContent = mine ? "Vote counted" : "Cast my vote";
+    /* leaderboard */
+    const board = $("awBoard"); board.innerHTML = "";
+    const rows = tally(cat), max = rows.length ? rows[0].n : 0;
+    if (!ready) board.appendChild(el("p","aw-empty", offline ? "Voting opens soon." : "Loading votes…"));
+    else if (!rows.length) board.appendChild(el("p","aw-empty","No votes yet. Be the first to nominate someone."));
+    rows.slice(0, 10).forEach((r, i) => {
+      const row = el("div","awrow" + (i === 0 ? " first" : ""));
+      const bar = el("i","bar"); bar.style.width = Math.round(r.n / max * 100) + "%";
+      const rank = el("span","rank", i === 0 ? "★" : String(i+1));
+      const who = el("span","who"); who.append(el("b", null, r.name)); if (r.country) who.append(el("small", null, r.country));
+      row.append(bar, rank, flagMini(r.country), who, el("span","n", r.n + (r.n === 1 ? " vote" : " votes")));
+      board.appendChild(row);
+    });
+    $("awTotal").textContent = VOTES.length;
+    $("awPeople").textContent = new Set(VOTES.map(v => keyOf(v.nominee||""))).size;
+    /* winners overview */
+    const ov = $("awOverview"); ov.innerHTML = "";
+    AWARDS.forEach(([id, label]) => {
+      const t = tally(id)[0];
+      const c = el("button","awcard" + (id === cat ? " on" : "")); c.type = "button";
+      c.append(el("span","lbl", label));
+      if (t){ const w = el("span","win"); w.append(flagMini(t.country), el("b", null, t.name)); c.append(w, el("span","cnt", t.n + (t.n === 1 ? " vote" : " votes"))); }
+      else c.append(el("span","none","No votes yet"));
+      c.addEventListener("click", () => { cat = id; draw(); $("awardsSec").scrollIntoView({behavior: RM ? "auto" : "smooth", block:"start"}); });
+      ov.appendChild(c);
+    });
+    /* name suggestions from chat and votes */
+    const dl = $("awNames"); dl.innerHTML = "";
+    const names = new Set(); (typeof POSTS !== "undefined" ? POSTS : []).forEach(p => p.name && names.add(cap(p.name))); VOTES.forEach(v => v.nominee && names.add(cap(v.nominee)));
+    [...names].sort().slice(0, 300).forEach(n => { const o = document.createElement("option"); o.value = n; dl.appendChild(o); });
+  }
+
+  const base = SUPABASE_URL ? SUPABASE_URL.replace(/\/$/,"") + "/rest/v1/votes" : "";
+  const headers = { apikey: SUPABASE_ANON_KEY, "Content-Type": "application/json" };
+  if (SUPABASE_ANON_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + SUPABASE_ANON_KEY;
+  async function load(){
+    if (!base){ ready = true; try { VOTES = JSON.parse(localStorage.getItem("ys-localvotes")||"[]"); } catch(e){} draw(); return; }
+    try {
+      const r = await fetch(base + "?select=category,nominee,country&limit=5000", {headers});
+      if (!r.ok) throw new Error(r.status);
+      VOTES = await r.json(); ready = true; offline = false;
+    } catch(e){ if (!ready){ offline = true; } }
+    draw();
+  }
+
+  $("awForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("awMsg"); msg.className = "form-msg"; msg.textContent = "";
+    const nominee = $("aw-nominee").value.trim().replace(/\s+/g," ").slice(0,40);
+    const country = cs.value, voter = $("aw-voter").value.trim().slice(0,40);
+    if (!nominee){ msg.className = "form-msg err"; msg.textContent = "Type the name of the person you're voting for."; $("aw-nominee").focus(); return; }
+    if (myVotes()[cat]){ msg.className = "form-msg err"; msg.textContent = "You've already voted in this category. Pick another one."; return; }
+    const btn = $("awSubmit"); btn.disabled = true; btn.textContent = "Sending…";
+    const row = {category: cat, nominee, country, voter, device};
+    try {
+      if (base){
+        const r = await fetch(base, {method:"POST", headers:{...headers, Prefer:"return=minimal"}, body: JSON.stringify(row)});
+        if (r.status === 409){ saveMine(cat, nominee); throw {already:true}; }
+        if (!r.ok) throw new Error(r.status);
+      } else {
+        const all = VOTES.concat([row]); try { localStorage.setItem("ys-localvotes", JSON.stringify(all)); } catch(err){}
+      }
+      VOTES.push(row); saveMine(cat, cap(nominee));
+      $("aw-nominee").value = ""; cs.value = "";
+      msg.className = "form-msg ok"; msg.textContent = "Vote counted for " + cap(nominee) + ". Try another category!";
+      draw(); setTimeout(load, 800);
+    } catch(err){
+      msg.className = "form-msg err";
+      msg.textContent = err && err.already ? "You've already voted in this category from this device." : "Your vote didn't go through. Check your connection and try again.";
+      draw();
+    }
+  });
+
+  draw(); load(); setInterval(load, 20000);
+})();
+
 </script>
 
 </body>

@@ -54,3 +54,30 @@ const SUPABASE_ANON_KEY = "eyJhbGciOi...";
 5. Commit. The wall now refreshes every 15 seconds for everyone.
 
 To remove an unwanted post, delete its row in Supabase's **Table Editor**.
+
+## People's awards (voting)
+
+Run this once in Supabase **SQL Editor** to switch on voting:
+
+```sql
+create table public.votes (
+  id uuid primary key default gen_random_uuid(),
+  category text not null check (char_length(category) between 1 and 40),
+  nominee text not null check (char_length(nominee) between 1 and 40),
+  country text check (char_length(country) <= 40),
+  voter text check (char_length(voter) <= 40),
+  device text not null check (char_length(device) between 8 and 64),
+  created_at timestamptz not null default now(),
+  unique (category, device)
+);
+
+alter table public.votes enable row level security;
+
+create policy "Anyone can read votes"
+  on public.votes for select to anon using (true);
+
+create policy "Anyone can vote"
+  on public.votes for insert to anon with check (true);
+```
+
+The `unique (category, device)` line allows one vote per category per phone. To remove a joke or spam vote, delete its row in **Table Editor → votes**.
