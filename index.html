@@ -180,6 +180,18 @@ section.block{padding-block:80px}
 .showcase figcaption{position:absolute;left:22px;right:22px;bottom:20px;z-index:1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
 .showcase figcaption b{font-size:clamp(18px,2.4vw,26px);font-weight:800;max-width:28ch;line-height:1.2}
 .showcase .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
+/* photo galleries */
+.galleries{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.gal{position:relative;display:block;border-radius:20px;overflow:hidden;text-decoration:none;color:#fff;aspect-ratio:4/3;background:linear-gradient(135deg,var(--accent),var(--deep));box-shadow:0 14px 34px rgba(15,31,24,.14);transition:transform .25s,box-shadow .25s}
+.gal:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(15,31,24,.2)}
+.gal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.gal:hover img{transform:scale(1.06)}
+.gal::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,42,31,0) 40%,rgba(5,42,31,.88) 100%)}
+.gal .cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.gal b{display:block;font-size:22px;font-weight:800;line-height:1.1}
+.gal small{display:block;font-size:13px;color:rgba(255,255,255,.8);margin-top:4px}
+.gal .go{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
+.gal-note{margin-top:16px;font-size:14px;color:var(--muted)}
 .culture-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:40px}
 .card-d{padding:26px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--deep-line)}
 .card-d h3{font-size:20px;font-weight:800}
@@ -396,6 +408,7 @@ footer b{color:#fff}
       <nav aria-label="Sections">
         <a href="#logistics">Logistics</a>
         <a href="#culture">Cultural night</a>
+        <a href="#photos">Photos</a>
         <a href="#wall" class="cta">Join the chat</a>
       </nav>
     </div>
@@ -570,6 +583,18 @@ footer b{color:#fff}
         </div>
       </div>
       <p class="cheer rv">May the best country <span>win!</span></p>
+    </div>
+  </section>
+
+  <section class="block band-mist" id="photos">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">Memories</span>
+        <h2>Photos from Mombasa</h2>
+        <p>Every day, captured by our photographer. Tap a day to open the full album, where you can view, share and download the pictures.</p>
+      </div>
+      <div class="galleries rv" id="galleries"></div>
+      <p class="gal-note">Photos by R Photography. Albums open on Pixieset in a new tab.</p>
     </div>
   </section>
 
@@ -846,6 +871,26 @@ const PARADE = [].concat(["KE","DE","NG","IT","UG","MZ","ZM"],["KE","DE","NG","I
   const one = hidden => PARADE.map(c=>`<div class="flag"${hidden?' aria-hidden="true"':''}><div class="cloth">${flagSvg(c)}</div><span>${FLAGS[c][0]}</span></div>`).join("");
   $("track").innerHTML = one(false) + one(true);
 }
+
+/* ============ Photo albums (add new days at the top of this list) ============ */
+const ALBUMS = [
+  { title: "Days 10 & 11", url: "https://rphotography10.pixieset.com/day10and11/", cover: "https://images.pixieset.com/386226421/abe2ce7d59071453808ad9119e672a39-cover.jpg" },
+  { title: "Day 9",        url: "https://rphotography63.pixieset.com/day9-1/",     cover: "https://images.pixieset.com/154005421/0826205e8d80130bfa844f5b3dd93753-cover.jpg" },
+];
+(function(){
+  const box = $("galleries"); if (!box) return;
+  if (!ALBUMS.length){ $("photos").hidden = true; return; }
+  ALBUMS.forEach(a => {
+    const card = document.createElement("a");
+    card.className = "gal"; card.href = a.url; card.target = "_blank"; card.rel = "noopener";
+    if (a.cover){ const img = document.createElement("img"); img.src = a.cover; img.alt = ""; img.loading = "lazy"; img.referrerPolicy = "no-referrer"; img.onerror = () => img.remove(); card.appendChild(img); }
+    const cap = document.createElement("span"); cap.className = "cap";
+    const t = document.createElement("span"); const b = document.createElement("b"); b.textContent = a.title;
+    const sm = document.createElement("small"); sm.textContent = "YouSustain in Mombasa"; t.append(b, sm);
+    const go = document.createElement("span"); go.className = "go"; go.textContent = "View album";
+    cap.append(t, go); card.appendChild(cap); box.appendChild(card);
+  });
+})();
 
 /* ============ Reveal on scroll ============ */
 (function(){
