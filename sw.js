@@ -1,5 +1,5 @@
 // YouSustain offline support: the page keeps opening without signal.
-const CACHE = "yousustain-v1";
+const CACHE = "yousustain-v2";
 const FILES = ["./", "index.html", "logo.png", "culture.jpg", "logistics.pdf",
   "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png", "manifest.webmanifest"];
 

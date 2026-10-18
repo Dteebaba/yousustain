@@ -988,6 +988,7 @@ const fx = (function(){
 })();
 
 function celebrate(kind, ms){
+  if (RM) return;
   fx(ms);
   const pop = $("pop");
   pop.innerHTML = kind === "end"
@@ -1010,7 +1011,15 @@ function renderTimes(){
 
 tick(); setInterval(tick, 1000);
 // Opening the page during or after the programme: celebrate once the intro has finished
-if (PHASE !== "pre") setTimeout(() => celebrate(PHASE, PHASE === "live" && now() - START < 864e5 ? 14000 : 8000), RM ? 0 : 3000);
+if (PHASE !== "pre"){
+  // celebrate on the first visit of each day (the replay button is always there)
+  let seen = ""; const today = PHASE + ":" + new Date(now()).toISOString().slice(0,10);
+  try { seen = localStorage.getItem("ys-celebrated") || ""; } catch(e){}
+  if (seen !== today || SHIFT){
+    try { localStorage.setItem("ys-celebrated", today); } catch(e){}
+    setTimeout(() => celebrate(PHASE, PHASE === "live" && now() - START < 864e5 ? 14000 : 8000), 3000);
+  }
+}
 
 const CITIES = [
   ["Nairobi · Mombasa","Africa/Nairobi","KE",true],["Kampala","Africa/Kampala","UG"],["Lusaka","Africa/Lusaka","ZM"],
