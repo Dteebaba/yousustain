@@ -127,6 +127,7 @@ section.block{padding-block:80px}
 .city{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);transition:transform .2s,box-shadow .2s}
 .city:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,31,24,.08)}
 .city .mini{grid-row:span 2}
+.city,.city .c,.city .t{min-width:0;overflow-wrap:anywhere}
 .city .c{font-weight:700;font-size:15px}
 .city .t{font-size:13px;color:var(--muted)}
 .city .t b{font-size:20px;color:var(--ink);font-weight:800;margin-right:6px;font-variant-numeric:tabular-nums}
@@ -180,19 +181,63 @@ section.block{padding-block:80px}
 .showcase figcaption{position:absolute;left:22px;right:22px;bottom:20px;z-index:1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px}
 .showcase figcaption b{font-size:clamp(18px,2.4vw,26px);font-weight:800;max-width:28ch;line-height:1.2}
 .showcase .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
-/* photo galleries */
-.galleries{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-.gal{position:relative;display:block;border-radius:20px;overflow:hidden;text-decoration:none;color:#fff;aspect-ratio:4/3;background:linear-gradient(135deg,var(--accent),var(--deep));box-shadow:0 14px 34px rgba(15,31,24,.14);transition:transform .25s,box-shadow .25s}
-.gal:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(15,31,24,.2)}
+/* photo slideshow + albums */
+.stage{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:16/8;min-height:300px;background:#031c15;box-shadow:0 30px 70px rgba(0,0,0,.45);border:1px solid var(--deep-line)}
+.stage .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
+.stage .slide.on{opacity:1}
+.stage .slide img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02)}
+.stage .slide.on img{animation:kb 7s ease-out forwards}
+.stage .slide:nth-child(2n).on img{animation-name:kb2}
+@keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.14) translate(-2%,-2%)}}
+@keyframes kb2{from{transform:scale(1.14) translate(2%,0)}to{transform:scale(1.02) translate(0,-1%)}}
+.stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,28,21,0) 50%,rgba(3,28,21,.9) 100%);pointer-events:none}
+.stage-cap{position:absolute;left:26px;right:26px;bottom:22px;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.stage-cap .day{font-size:clamp(26px,4vw,44px);font-weight:800;line-height:1}
+.stage-cap .sub{font-size:14px;color:rgba(255,255,255,.75);margin-top:6px}
+.stage-cap .day span{color:var(--gold)}
+.stage .nav{position:absolute;top:50%;z-index:3;width:46px;height:46px;margin-top:-23px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(3,28,21,.45);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.stage .nav:hover{background:rgba(3,28,21,.75)}
+.stage .prev{left:16px}.stage .next{right:16px}
+.stage .count{position:absolute;top:16px;right:18px;z-index:3;font-size:13px;font-weight:700;padding:5px 11px;border-radius:999px;background:rgba(3,28,21,.55);color:#fff}
+.stage .timer{position:absolute;left:0;top:0;height:3px;z-index:3;background:var(--gold);width:0}
+.stage .timer.run{animation:fill 5.5s linear forwards}
+@keyframes fill{to{width:100%}}
+.strip{overflow:hidden;margin-top:18px;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.strip .rail{display:flex;gap:12px;width:max-content;animation:march 60s linear infinite}
+.strip:hover .rail{animation-play-state:paused}
+.strip button{flex:none;width:150px;height:96px;border-radius:12px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:#0A3A2B;position:relative}
+.strip button.on{border-color:var(--gold)}
+.strip img{width:100%;height:100%;object-fit:cover;display:block}
+.strip button span{position:absolute;left:6px;bottom:5px;font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.albums-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin:44px 0 16px}
+.albums-head h3{font-size:22px;font-weight:800}
+.albums-head p{color:rgba(255,255,255,.7);font-size:14px}
+.galleries{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.gal{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg,var(--accent),#031c15);border:1px solid var(--deep-line);transition:transform .25s}
+.gal:hover{transform:translateY(-3px)}
 .gal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
 .gal:hover img{transform:scale(1.06)}
-.gal::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,42,31,0) 40%,rgba(5,42,31,.88) 100%)}
-.gal .cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-.gal b{display:block;font-size:22px;font-weight:800;line-height:1.1}
-.gal small{display:block;font-size:13px;color:rgba(255,255,255,.8);margin-top:4px}
-.gal .go{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:13px;font-weight:800}
-.gal-note{margin-top:16px;font-size:14px;color:var(--muted)}
-.culture-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:40px}
+.gal::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,28,21,0) 35%,rgba(3,28,21,.9) 100%);pointer-events:none}
+.gal .open{position:absolute;inset:0;z-index:1}
+.gal .cap{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:8px;pointer-events:none}
+.gal b{display:block;font-size:18px;font-weight:800;line-height:1.1;color:#fff}
+.gal .go{flex:none;padding:5px 10px;border-radius:999px;background:var(--gold);color:var(--deep);font-size:12px;font-weight:800}
+.gal .pin{position:absolute;top:10px;left:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;border:0;background:#fff;color:var(--deep);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.gal .pin:hover{background:var(--gold)}
+.gal-note{margin-top:16px;font-size:14px;color:rgba(255,255,255,.7)}
+
+/* serious countdown during the programme */
+.hero.p-live .clock-lbl{font-size:clamp(15px,1.6vw,18px);letter-spacing:.14em;color:#fff;margin-bottom:-8px}
+.hero.p-live .clock{gap:10px;perspective:600px}
+.hero.p-live .unit{position:relative;overflow:hidden;background:linear-gradient(180deg,#0d2a20 0%,#0d2a20 50%,#0a241b 50%,#0a241b 100%);border:1px solid rgba(255,255,255,.1);border-radius:12px;backdrop-filter:none;box-shadow:0 14px 30px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)}
+.hero.p-live .unit::after{content:"";position:absolute;left:0;right:0;top:calc(50% - 10px);height:2px;background:rgba(0,0,0,.55)}
+.hero.p-live .unit .n{font-size:clamp(52px,9.4vw,112px);letter-spacing:-.02em}
+.hero.p-live .unit.sec{background:linear-gradient(180deg,#0d2a20 0%,#0d2a20 50%,#0a241b 50%,#0a241b 100%);color:#fff;border-color:rgba(244,180,0,.5)}
+.hero.p-live .unit.sec .n{color:var(--gold)}
+.hero.p-live .unit.sec .l{color:rgba(255,255,255,.65)}
+.hero.p-live.final .unit .n{color:#ff6b6b}
+
+.culture-grid{.culture-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:40px}
 .card-d{padding:26px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--deep-line)}
 .card-d h3{font-size:20px;font-weight:800}
 .card-d > p{color:rgba(255,255,255,.75);margin-top:6px}
@@ -364,10 +409,14 @@ footer b{color:#fff}
   .brand b{font-size:16px}
   .brand img{width:44px;height:44px}
   .cloth{width:52px;height:35px}
+  .stage{aspect-ratio:4/3.4}
+  .stage .nav{display:none}
+  .stage-cap{left:16px;right:16px;bottom:16px}
+  .strip button{width:110px;height:72px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .glow,.pill i,.cloth,.cloth::after,.showcase img{animation:none}
+  .glow,.pill i,.cloth,.cloth::after,.showcase img,.stage .slide.on img,.strip .rail,.stage .timer.run{animation:none}
   .track{animation:none;flex-wrap:wrap;justify-content:center;width:auto;padding-inline:16px;row-gap:14px}
   .track [aria-hidden="true"]{display:none}
   .js .rv{opacity:1;transform:none;transition:none}
@@ -586,15 +635,31 @@ footer b{color:#fff}
     </div>
   </section>
 
-  <section class="block band-mist" id="photos">
+  <section class="block band-deep" id="photos">
     <div class="wrap">
       <div class="head rv">
         <span class="eyebrow">Memories</span>
-        <h2>Photos from Mombasa</h2>
-        <p>Every day, captured by our photographer. Tap a day to open the full album, where you can view, share and download the pictures.</p>
+        <h2>Mombasa, day by day</h2>
+        <p>Moments from every day of the programme, captured by our photographer. Every album is open to all, so view, share and download as many photos as you like.</p>
       </div>
-      <div class="galleries rv" id="galleries"></div>
-      <p class="gal-note">Photos by R Photography. Albums open on Pixieset in a new tab.</p>
+      <div class="stage rv" id="stage" aria-roledescription="carousel" aria-label="Photo highlights">
+        <i class="timer" id="stageTimer"></i>
+        <span class="count" id="stageCount"></span>
+        <button class="nav prev" type="button" id="stagePrev" aria-label="Previous photo">‹</button>
+        <button class="nav next" type="button" id="stageNext" aria-label="Next photo">›</button>
+        <div class="stage-cap">
+          <div><div class="day" id="stageDay"></div><div class="sub">YouSustain in Mombasa · R Photography</div></div>
+          <a class="btn gold" id="stageLink" href="#" target="_blank" rel="noopener">Open this album</a>
+        </div>
+      </div>
+      <div class="strip" aria-hidden="true"><div class="rail" id="strip"></div></div>
+
+      <div class="albums-head">
+        <h3>All albums</h3>
+        <p>Tap a day to open it. Where an album asks for a download PIN, it's shown on the card. Tap the PIN to copy it.</p>
+      </div>
+      <div class="galleries" id="galleries"></div>
+      <p class="gal-note">Photos by R Photography, hosted on Pixieset. Albums open in a new tab.</p>
     </div>
   </section>
 
@@ -736,6 +801,10 @@ function applyPhase(p){
   $("progress").hidden = p === "pre";
   $("replay").hidden = p === "pre" || RM;
   $("times").hidden = p === "end";
+  $("hero").classList.toggle("p-live", p === "live");
+  const main = document.querySelector("main");
+  const order = p === "pre" ? ["times","logistics","culture","photos","wall"] : ["photos","wall","culture","logistics","times"];
+  order.forEach(id => { const el = $(id); if (el) main.appendChild(el); });
   if (p !== "end"){ $("timesEyebrow").textContent = c.tEye; $("timesTitle").textContent = c.tTitle; $("timesSub").textContent = c.tSub; }
   $("wallTitle").textContent = c.wTitle; $("wallSub").textContent = c.wSub;
   if (typeof renderTimes === "function") renderTimes();
@@ -764,7 +833,16 @@ function tick(){
   $("h").textContent = pad(Math.floor(s%86400/3600));
   $("m").textContent = pad(Math.floor(s%3600/60));
   $("s").textContent = pad(s%60);
-  if (!RM && $("s").animate) $("s").animate([{transform:"translateY(-8px)",opacity:.35},{transform:"none",opacity:1}],{duration:320,easing:"ease-out"});
+  $("hero").classList.toggle("final", p === "live" && s < 86400);
+  if (!RM){
+    ["d","h","m","s"].forEach(id => {
+      const el = $(id); if (!el.animate || el.dataset.v === el.textContent) return;
+      const first = el.dataset.v === undefined; el.dataset.v = el.textContent; if (first) return;
+      el.animate(PHASE === "live"
+        ? [{transform:"rotateX(-75deg)",opacity:.25},{transform:"none",opacity:1}]
+        : [{transform:"translateY(-8px)",opacity:.35},{transform:"none",opacity:1}], {duration:380,easing:"ease-out"});
+    });
+  }
 }
 
 /* ============ Fireworks ============ */
@@ -884,23 +962,74 @@ const ALBUMS = [
   { title: "Day 6", url: "https://rphography.pixieset.com/day6/", cover: "https://images.pixieset.com/243131421/29d933620959cdad28893105afaec30a-cover.jpg" },
   { title: "Day 5", url: "https://rphography.pixieset.com/day5-1/", cover: "https://images.pixieset.com/390650421/a2393bf0d41dca961c50cd193146c110-cover.jpg" },
   { title: "Day 4", url: "https://rphotography4099.pixieset.com/day4/", cover: "https://images.pixieset.com/923239321/0ef55faf4d84a79273c1ae3e6eb7a904-cover.jpg" },
-  { title: "Day 3", url: "https://rphotography4099.pixieset.com/day3/", cover: "https://images.pixieset.com/863798321/37525e1acb004e597e6b2de1d6388a17-cover.jpg" },
-  { title: "Day 2", url: "https://rphotography4099.pixieset.com/day2/", cover: "https://images.pixieset.com/596748321/79d9cf942f79f5f085feebaeec5742e8-cover.jpg" },
+  { title: "Day 3", pin: "2758", url: "https://rphotography4099.pixieset.com/day3/", cover: "https://images.pixieset.com/863798321/37525e1acb004e597e6b2de1d6388a17-cover.jpg" },
+  { title: "Day 2", pin: "3713", url: "https://rphotography4099.pixieset.com/day2/", cover: "https://images.pixieset.com/596748321/79d9cf942f79f5f085feebaeec5742e8-cover.jpg" },
   { title: "Day 1 · Arrival", url: "https://rphotography4099.pixieset.com/day1arrival/", cover: "https://images.pixieset.com/707767321/103af28d557cb26a6996c16c3c015fd2-cover.jpg" },
 ];
 (function(){
   const box = $("galleries"); if (!box) return;
   if (!ALBUMS.length){ $("photos").hidden = true; return; }
+  const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const pic = (src, lazy) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.referrerPolicy = "no-referrer"; if (lazy) i.loading = "lazy"; i.onerror = () => i.remove(); return i; };
+
+  /* album cards */
   ALBUMS.forEach(a => {
-    const card = document.createElement("a");
-    card.className = "gal"; card.href = a.url; card.target = "_blank"; card.rel = "noopener";
-    if (a.cover){ const img = document.createElement("img"); img.src = a.cover; img.alt = ""; img.loading = "lazy"; img.referrerPolicy = "no-referrer"; img.onerror = () => img.remove(); card.appendChild(img); }
-    const cap = document.createElement("span"); cap.className = "cap";
-    const t = document.createElement("span"); const b = document.createElement("b"); b.textContent = a.title;
-    const sm = document.createElement("small"); sm.textContent = "YouSustain in Mombasa"; t.append(b, sm);
-    const go = document.createElement("span"); go.className = "go"; go.textContent = "View album";
-    cap.append(t, go); card.appendChild(cap); box.appendChild(card);
+    const card = mk("div","gal");
+    if (a.cover) card.appendChild(pic(a.cover, true));
+    const open = mk("a","open"); open.href = a.url; open.target = "_blank"; open.rel = "noopener"; open.setAttribute("aria-label", "Open " + a.title + " album");
+    card.appendChild(open);
+    if (a.pin){
+      const pin = mk("button","pin"); pin.type = "button"; pin.textContent = "Download PIN " + a.pin;
+      pin.title = "Copy PIN";
+      pin.addEventListener("click", () => {
+        const done = () => { pin.textContent = "PIN copied ✓"; setTimeout(() => pin.textContent = "Download PIN " + a.pin, 1800); };
+        if (navigator.clipboard) navigator.clipboard.writeText(a.pin).then(done, done); else done();
+      });
+      card.appendChild(pin);
+    }
+    const cap = mk("span","cap"); cap.append(mk("b", null, a.title), mk("span","go","View album"));
+    card.appendChild(cap); box.appendChild(card);
   });
+
+  /* slideshow */
+  const stage = $("stage"), slides = ALBUMS.filter(a => a.cover);
+  if (!slides.length){ stage.hidden = true; return; }
+  const els = slides.map((a, i) => { const d = mk("div","slide"); d.appendChild(pic(a.cover, i > 1)); stage.insertBefore(d, $("stageTimer")); return d; });
+  const strip = $("strip");
+  const thumbs = [];
+  [0,1].forEach(copy => slides.forEach((a, i) => {
+    const b = mk("button"); b.type = "button"; b.tabIndex = -1; b.appendChild(pic(a.cover, true)); b.appendChild(mk("span", null, a.title));
+    b.addEventListener("click", () => go(i, true)); strip.appendChild(b); thumbs.push([i, b]);
+  }));
+  let cur = -1, timer = 0;
+  function go(i, user){
+    i = (i + slides.length) % slides.length;
+    if (cur >= 0) els[cur].classList.remove("on");
+    cur = i; els[cur].classList.add("on");
+    const t = slides[cur].title, m = t.match(/^(Days?)\s(.*)$/);
+    const day = $("stageDay"); day.textContent = "";
+    if (m){ day.append(m[1] + " "); const sp = mk("span", null, m[2]); day.appendChild(sp); } else day.textContent = t;
+    $("stageLink").href = slides[cur].url;
+    $("stageCount").textContent = (cur + 1) + " / " + slides.length;
+    thumbs.forEach(([k, b]) => b.classList.toggle("on", k === cur));
+    restart();
+  }
+  function restart(){
+    clearTimeout(timer);
+    const bar = $("stageTimer"); bar.classList.remove("run"); void bar.offsetWidth;
+    if (RM || paused) return;
+    bar.classList.add("run"); timer = setTimeout(() => go(cur + 1), 5500);
+  }
+  let paused = false;
+  stage.addEventListener("mouseenter", () => { paused = true; restart(); });
+  stage.addEventListener("mouseleave", () => { paused = false; restart(); });
+  $("stagePrev").addEventListener("click", () => go(cur - 1, true));
+  $("stageNext").addEventListener("click", () => go(cur + 1, true));
+  let x0 = null;
+  stage.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+  stage.addEventListener("touchend", e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1), true); x0 = null; });
+  document.addEventListener("visibilitychange", () => { paused = document.hidden; restart(); });
+  go(0);
 })();
 
 /* ============ Reveal on scroll ============ */
